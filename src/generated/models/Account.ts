@@ -259,6 +259,8 @@ export type AccountWhereInput = {
   ledger?: Prisma.XOR<Prisma.LedgerScalarRelationFilter, Prisma.LedgerWhereInput>
   transactionsFrom?: Prisma.TransactionListRelationFilter
   transactionsTo?: Prisma.TransactionListRelationFilter
+  templates?: Prisma.TemplateListRelationFilter
+  recurringRules?: Prisma.RecurringRuleListRelationFilter
 }
 
 export type AccountOrderByWithRelationInput = {
@@ -274,6 +276,8 @@ export type AccountOrderByWithRelationInput = {
   ledger?: Prisma.LedgerOrderByWithRelationInput
   transactionsFrom?: Prisma.TransactionOrderByRelationAggregateInput
   transactionsTo?: Prisma.TransactionOrderByRelationAggregateInput
+  templates?: Prisma.TemplateOrderByRelationAggregateInput
+  recurringRules?: Prisma.RecurringRuleOrderByRelationAggregateInput
 }
 
 export type AccountWhereUniqueInput = Prisma.AtLeast<{
@@ -292,6 +296,8 @@ export type AccountWhereUniqueInput = Prisma.AtLeast<{
   ledger?: Prisma.XOR<Prisma.LedgerScalarRelationFilter, Prisma.LedgerWhereInput>
   transactionsFrom?: Prisma.TransactionListRelationFilter
   transactionsTo?: Prisma.TransactionListRelationFilter
+  templates?: Prisma.TemplateListRelationFilter
+  recurringRules?: Prisma.RecurringRuleListRelationFilter
 }, "id">
 
 export type AccountOrderByWithAggregationInput = {
@@ -338,6 +344,8 @@ export type AccountCreateInput = {
   ledger: Prisma.LedgerCreateNestedOneWithoutAccountsInput
   transactionsFrom?: Prisma.TransactionCreateNestedManyWithoutAccountInput
   transactionsTo?: Prisma.TransactionCreateNestedManyWithoutToAccountInput
+  templates?: Prisma.TemplateCreateNestedManyWithoutAccountInput
+  recurringRules?: Prisma.RecurringRuleCreateNestedManyWithoutAccountInput
 }
 
 export type AccountUncheckedCreateInput = {
@@ -352,6 +360,8 @@ export type AccountUncheckedCreateInput = {
   sortOrder?: number
   transactionsFrom?: Prisma.TransactionUncheckedCreateNestedManyWithoutAccountInput
   transactionsTo?: Prisma.TransactionUncheckedCreateNestedManyWithoutToAccountInput
+  templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutAccountInput
+  recurringRules?: Prisma.RecurringRuleUncheckedCreateNestedManyWithoutAccountInput
 }
 
 export type AccountUpdateInput = {
@@ -366,6 +376,8 @@ export type AccountUpdateInput = {
   ledger?: Prisma.LedgerUpdateOneRequiredWithoutAccountsNestedInput
   transactionsFrom?: Prisma.TransactionUpdateManyWithoutAccountNestedInput
   transactionsTo?: Prisma.TransactionUpdateManyWithoutToAccountNestedInput
+  templates?: Prisma.TemplateUpdateManyWithoutAccountNestedInput
+  recurringRules?: Prisma.RecurringRuleUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUncheckedUpdateInput = {
@@ -380,6 +392,8 @@ export type AccountUncheckedUpdateInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   transactionsFrom?: Prisma.TransactionUncheckedUpdateManyWithoutAccountNestedInput
   transactionsTo?: Prisma.TransactionUncheckedUpdateManyWithoutToAccountNestedInput
+  templates?: Prisma.TemplateUncheckedUpdateManyWithoutAccountNestedInput
+  recurringRules?: Prisma.RecurringRuleUncheckedUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountCreateManyInput = {
@@ -562,6 +576,38 @@ export type AccountUpdateOneWithoutTransactionsToNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutTransactionsToInput, Prisma.AccountUpdateWithoutTransactionsToInput>, Prisma.AccountUncheckedUpdateWithoutTransactionsToInput>
 }
 
+export type AccountCreateNestedOneWithoutTemplatesInput = {
+  create?: Prisma.XOR<Prisma.AccountCreateWithoutTemplatesInput, Prisma.AccountUncheckedCreateWithoutTemplatesInput>
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutTemplatesInput
+  connect?: Prisma.AccountWhereUniqueInput
+}
+
+export type AccountUpdateOneWithoutTemplatesNestedInput = {
+  create?: Prisma.XOR<Prisma.AccountCreateWithoutTemplatesInput, Prisma.AccountUncheckedCreateWithoutTemplatesInput>
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutTemplatesInput
+  upsert?: Prisma.AccountUpsertWithoutTemplatesInput
+  disconnect?: Prisma.AccountWhereInput | boolean
+  delete?: Prisma.AccountWhereInput | boolean
+  connect?: Prisma.AccountWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutTemplatesInput, Prisma.AccountUpdateWithoutTemplatesInput>, Prisma.AccountUncheckedUpdateWithoutTemplatesInput>
+}
+
+export type AccountCreateNestedOneWithoutRecurringRulesInput = {
+  create?: Prisma.XOR<Prisma.AccountCreateWithoutRecurringRulesInput, Prisma.AccountUncheckedCreateWithoutRecurringRulesInput>
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutRecurringRulesInput
+  connect?: Prisma.AccountWhereUniqueInput
+}
+
+export type AccountUpdateOneWithoutRecurringRulesNestedInput = {
+  create?: Prisma.XOR<Prisma.AccountCreateWithoutRecurringRulesInput, Prisma.AccountUncheckedCreateWithoutRecurringRulesInput>
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutRecurringRulesInput
+  upsert?: Prisma.AccountUpsertWithoutRecurringRulesInput
+  disconnect?: Prisma.AccountWhereInput | boolean
+  delete?: Prisma.AccountWhereInput | boolean
+  connect?: Prisma.AccountWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutRecurringRulesInput, Prisma.AccountUpdateWithoutRecurringRulesInput>, Prisma.AccountUncheckedUpdateWithoutRecurringRulesInput>
+}
+
 export type AccountCreateWithoutLedgerInput = {
   id?: string
   name: string
@@ -573,6 +619,8 @@ export type AccountCreateWithoutLedgerInput = {
   sortOrder?: number
   transactionsFrom?: Prisma.TransactionCreateNestedManyWithoutAccountInput
   transactionsTo?: Prisma.TransactionCreateNestedManyWithoutToAccountInput
+  templates?: Prisma.TemplateCreateNestedManyWithoutAccountInput
+  recurringRules?: Prisma.RecurringRuleCreateNestedManyWithoutAccountInput
 }
 
 export type AccountUncheckedCreateWithoutLedgerInput = {
@@ -586,6 +634,8 @@ export type AccountUncheckedCreateWithoutLedgerInput = {
   sortOrder?: number
   transactionsFrom?: Prisma.TransactionUncheckedCreateNestedManyWithoutAccountInput
   transactionsTo?: Prisma.TransactionUncheckedCreateNestedManyWithoutToAccountInput
+  templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutAccountInput
+  recurringRules?: Prisma.RecurringRuleUncheckedCreateNestedManyWithoutAccountInput
 }
 
 export type AccountCreateOrConnectWithoutLedgerInput = {
@@ -639,6 +689,8 @@ export type AccountCreateWithoutTransactionsFromInput = {
   sortOrder?: number
   ledger: Prisma.LedgerCreateNestedOneWithoutAccountsInput
   transactionsTo?: Prisma.TransactionCreateNestedManyWithoutToAccountInput
+  templates?: Prisma.TemplateCreateNestedManyWithoutAccountInput
+  recurringRules?: Prisma.RecurringRuleCreateNestedManyWithoutAccountInput
 }
 
 export type AccountUncheckedCreateWithoutTransactionsFromInput = {
@@ -652,6 +704,8 @@ export type AccountUncheckedCreateWithoutTransactionsFromInput = {
   color?: string | null
   sortOrder?: number
   transactionsTo?: Prisma.TransactionUncheckedCreateNestedManyWithoutToAccountInput
+  templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutAccountInput
+  recurringRules?: Prisma.RecurringRuleUncheckedCreateNestedManyWithoutAccountInput
 }
 
 export type AccountCreateOrConnectWithoutTransactionsFromInput = {
@@ -670,6 +724,8 @@ export type AccountCreateWithoutTransactionsToInput = {
   sortOrder?: number
   ledger: Prisma.LedgerCreateNestedOneWithoutAccountsInput
   transactionsFrom?: Prisma.TransactionCreateNestedManyWithoutAccountInput
+  templates?: Prisma.TemplateCreateNestedManyWithoutAccountInput
+  recurringRules?: Prisma.RecurringRuleCreateNestedManyWithoutAccountInput
 }
 
 export type AccountUncheckedCreateWithoutTransactionsToInput = {
@@ -683,6 +739,8 @@ export type AccountUncheckedCreateWithoutTransactionsToInput = {
   color?: string | null
   sortOrder?: number
   transactionsFrom?: Prisma.TransactionUncheckedCreateNestedManyWithoutAccountInput
+  templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutAccountInput
+  recurringRules?: Prisma.RecurringRuleUncheckedCreateNestedManyWithoutAccountInput
 }
 
 export type AccountCreateOrConnectWithoutTransactionsToInput = {
@@ -712,6 +770,8 @@ export type AccountUpdateWithoutTransactionsFromInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   ledger?: Prisma.LedgerUpdateOneRequiredWithoutAccountsNestedInput
   transactionsTo?: Prisma.TransactionUpdateManyWithoutToAccountNestedInput
+  templates?: Prisma.TemplateUpdateManyWithoutAccountNestedInput
+  recurringRules?: Prisma.RecurringRuleUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUncheckedUpdateWithoutTransactionsFromInput = {
@@ -725,6 +785,8 @@ export type AccountUncheckedUpdateWithoutTransactionsFromInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   transactionsTo?: Prisma.TransactionUncheckedUpdateManyWithoutToAccountNestedInput
+  templates?: Prisma.TemplateUncheckedUpdateManyWithoutAccountNestedInput
+  recurringRules?: Prisma.RecurringRuleUncheckedUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUpsertWithoutTransactionsToInput = {
@@ -749,6 +811,8 @@ export type AccountUpdateWithoutTransactionsToInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   ledger?: Prisma.LedgerUpdateOneRequiredWithoutAccountsNestedInput
   transactionsFrom?: Prisma.TransactionUpdateManyWithoutAccountNestedInput
+  templates?: Prisma.TemplateUpdateManyWithoutAccountNestedInput
+  recurringRules?: Prisma.RecurringRuleUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUncheckedUpdateWithoutTransactionsToInput = {
@@ -762,6 +826,160 @@ export type AccountUncheckedUpdateWithoutTransactionsToInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   transactionsFrom?: Prisma.TransactionUncheckedUpdateManyWithoutAccountNestedInput
+  templates?: Prisma.TemplateUncheckedUpdateManyWithoutAccountNestedInput
+  recurringRules?: Prisma.RecurringRuleUncheckedUpdateManyWithoutAccountNestedInput
+}
+
+export type AccountCreateWithoutTemplatesInput = {
+  id?: string
+  name: string
+  type: string
+  balance?: number
+  initialBalance?: number
+  icon?: string | null
+  color?: string | null
+  sortOrder?: number
+  ledger: Prisma.LedgerCreateNestedOneWithoutAccountsInput
+  transactionsFrom?: Prisma.TransactionCreateNestedManyWithoutAccountInput
+  transactionsTo?: Prisma.TransactionCreateNestedManyWithoutToAccountInput
+  recurringRules?: Prisma.RecurringRuleCreateNestedManyWithoutAccountInput
+}
+
+export type AccountUncheckedCreateWithoutTemplatesInput = {
+  id?: string
+  ledgerId: string
+  name: string
+  type: string
+  balance?: number
+  initialBalance?: number
+  icon?: string | null
+  color?: string | null
+  sortOrder?: number
+  transactionsFrom?: Prisma.TransactionUncheckedCreateNestedManyWithoutAccountInput
+  transactionsTo?: Prisma.TransactionUncheckedCreateNestedManyWithoutToAccountInput
+  recurringRules?: Prisma.RecurringRuleUncheckedCreateNestedManyWithoutAccountInput
+}
+
+export type AccountCreateOrConnectWithoutTemplatesInput = {
+  where: Prisma.AccountWhereUniqueInput
+  create: Prisma.XOR<Prisma.AccountCreateWithoutTemplatesInput, Prisma.AccountUncheckedCreateWithoutTemplatesInput>
+}
+
+export type AccountUpsertWithoutTemplatesInput = {
+  update: Prisma.XOR<Prisma.AccountUpdateWithoutTemplatesInput, Prisma.AccountUncheckedUpdateWithoutTemplatesInput>
+  create: Prisma.XOR<Prisma.AccountCreateWithoutTemplatesInput, Prisma.AccountUncheckedCreateWithoutTemplatesInput>
+  where?: Prisma.AccountWhereInput
+}
+
+export type AccountUpdateToOneWithWhereWithoutTemplatesInput = {
+  where?: Prisma.AccountWhereInput
+  data: Prisma.XOR<Prisma.AccountUpdateWithoutTemplatesInput, Prisma.AccountUncheckedUpdateWithoutTemplatesInput>
+}
+
+export type AccountUpdateWithoutTemplatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  initialBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  ledger?: Prisma.LedgerUpdateOneRequiredWithoutAccountsNestedInput
+  transactionsFrom?: Prisma.TransactionUpdateManyWithoutAccountNestedInput
+  transactionsTo?: Prisma.TransactionUpdateManyWithoutToAccountNestedInput
+  recurringRules?: Prisma.RecurringRuleUpdateManyWithoutAccountNestedInput
+}
+
+export type AccountUncheckedUpdateWithoutTemplatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ledgerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  initialBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  transactionsFrom?: Prisma.TransactionUncheckedUpdateManyWithoutAccountNestedInput
+  transactionsTo?: Prisma.TransactionUncheckedUpdateManyWithoutToAccountNestedInput
+  recurringRules?: Prisma.RecurringRuleUncheckedUpdateManyWithoutAccountNestedInput
+}
+
+export type AccountCreateWithoutRecurringRulesInput = {
+  id?: string
+  name: string
+  type: string
+  balance?: number
+  initialBalance?: number
+  icon?: string | null
+  color?: string | null
+  sortOrder?: number
+  ledger: Prisma.LedgerCreateNestedOneWithoutAccountsInput
+  transactionsFrom?: Prisma.TransactionCreateNestedManyWithoutAccountInput
+  transactionsTo?: Prisma.TransactionCreateNestedManyWithoutToAccountInput
+  templates?: Prisma.TemplateCreateNestedManyWithoutAccountInput
+}
+
+export type AccountUncheckedCreateWithoutRecurringRulesInput = {
+  id?: string
+  ledgerId: string
+  name: string
+  type: string
+  balance?: number
+  initialBalance?: number
+  icon?: string | null
+  color?: string | null
+  sortOrder?: number
+  transactionsFrom?: Prisma.TransactionUncheckedCreateNestedManyWithoutAccountInput
+  transactionsTo?: Prisma.TransactionUncheckedCreateNestedManyWithoutToAccountInput
+  templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutAccountInput
+}
+
+export type AccountCreateOrConnectWithoutRecurringRulesInput = {
+  where: Prisma.AccountWhereUniqueInput
+  create: Prisma.XOR<Prisma.AccountCreateWithoutRecurringRulesInput, Prisma.AccountUncheckedCreateWithoutRecurringRulesInput>
+}
+
+export type AccountUpsertWithoutRecurringRulesInput = {
+  update: Prisma.XOR<Prisma.AccountUpdateWithoutRecurringRulesInput, Prisma.AccountUncheckedUpdateWithoutRecurringRulesInput>
+  create: Prisma.XOR<Prisma.AccountCreateWithoutRecurringRulesInput, Prisma.AccountUncheckedCreateWithoutRecurringRulesInput>
+  where?: Prisma.AccountWhereInput
+}
+
+export type AccountUpdateToOneWithWhereWithoutRecurringRulesInput = {
+  where?: Prisma.AccountWhereInput
+  data: Prisma.XOR<Prisma.AccountUpdateWithoutRecurringRulesInput, Prisma.AccountUncheckedUpdateWithoutRecurringRulesInput>
+}
+
+export type AccountUpdateWithoutRecurringRulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  initialBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  ledger?: Prisma.LedgerUpdateOneRequiredWithoutAccountsNestedInput
+  transactionsFrom?: Prisma.TransactionUpdateManyWithoutAccountNestedInput
+  transactionsTo?: Prisma.TransactionUpdateManyWithoutToAccountNestedInput
+  templates?: Prisma.TemplateUpdateManyWithoutAccountNestedInput
+}
+
+export type AccountUncheckedUpdateWithoutRecurringRulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ledgerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  initialBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  transactionsFrom?: Prisma.TransactionUncheckedUpdateManyWithoutAccountNestedInput
+  transactionsTo?: Prisma.TransactionUncheckedUpdateManyWithoutToAccountNestedInput
+  templates?: Prisma.TemplateUncheckedUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountCreateManyLedgerInput = {
@@ -786,6 +1004,8 @@ export type AccountUpdateWithoutLedgerInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   transactionsFrom?: Prisma.TransactionUpdateManyWithoutAccountNestedInput
   transactionsTo?: Prisma.TransactionUpdateManyWithoutToAccountNestedInput
+  templates?: Prisma.TemplateUpdateManyWithoutAccountNestedInput
+  recurringRules?: Prisma.RecurringRuleUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUncheckedUpdateWithoutLedgerInput = {
@@ -799,6 +1019,8 @@ export type AccountUncheckedUpdateWithoutLedgerInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   transactionsFrom?: Prisma.TransactionUncheckedUpdateManyWithoutAccountNestedInput
   transactionsTo?: Prisma.TransactionUncheckedUpdateManyWithoutToAccountNestedInput
+  templates?: Prisma.TemplateUncheckedUpdateManyWithoutAccountNestedInput
+  recurringRules?: Prisma.RecurringRuleUncheckedUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUncheckedUpdateManyWithoutLedgerInput = {
@@ -820,11 +1042,15 @@ export type AccountUncheckedUpdateManyWithoutLedgerInput = {
 export type AccountCountOutputType = {
   transactionsFrom: number
   transactionsTo: number
+  templates: number
+  recurringRules: number
 }
 
 export type AccountCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transactionsFrom?: boolean | AccountCountOutputTypeCountTransactionsFromArgs
   transactionsTo?: boolean | AccountCountOutputTypeCountTransactionsToArgs
+  templates?: boolean | AccountCountOutputTypeCountTemplatesArgs
+  recurringRules?: boolean | AccountCountOutputTypeCountRecurringRulesArgs
 }
 
 /**
@@ -851,6 +1077,20 @@ export type AccountCountOutputTypeCountTransactionsToArgs<ExtArgs extends runtim
   where?: Prisma.TransactionWhereInput
 }
 
+/**
+ * AccountCountOutputType without action
+ */
+export type AccountCountOutputTypeCountTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TemplateWhereInput
+}
+
+/**
+ * AccountCountOutputType without action
+ */
+export type AccountCountOutputTypeCountRecurringRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecurringRuleWhereInput
+}
+
 
 export type AccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -865,6 +1105,8 @@ export type AccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
   transactionsFrom?: boolean | Prisma.Account$transactionsFromArgs<ExtArgs>
   transactionsTo?: boolean | Prisma.Account$transactionsToArgs<ExtArgs>
+  templates?: boolean | Prisma.Account$templatesArgs<ExtArgs>
+  recurringRules?: boolean | Prisma.Account$recurringRulesArgs<ExtArgs>
   _count?: boolean | Prisma.AccountCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["account"]>
 
@@ -911,6 +1153,8 @@ export type AccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
   transactionsFrom?: boolean | Prisma.Account$transactionsFromArgs<ExtArgs>
   transactionsTo?: boolean | Prisma.Account$transactionsToArgs<ExtArgs>
+  templates?: boolean | Prisma.Account$templatesArgs<ExtArgs>
+  recurringRules?: boolean | Prisma.Account$recurringRulesArgs<ExtArgs>
   _count?: boolean | Prisma.AccountCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AccountIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -926,6 +1170,8 @@ export type $AccountPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     ledger: Prisma.$LedgerPayload<ExtArgs>
     transactionsFrom: Prisma.$TransactionPayload<ExtArgs>[]
     transactionsTo: Prisma.$TransactionPayload<ExtArgs>[]
+    templates: Prisma.$TemplatePayload<ExtArgs>[]
+    recurringRules: Prisma.$RecurringRulePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1334,6 +1580,8 @@ export interface Prisma__AccountClient<T, Null = never, ExtArgs extends runtime.
   ledger<T extends Prisma.LedgerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LedgerDefaultArgs<ExtArgs>>): Prisma.Prisma__LedgerClient<runtime.Types.Result.GetResult<Prisma.$LedgerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   transactionsFrom<T extends Prisma.Account$transactionsFromArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$transactionsFromArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transactionsTo<T extends Prisma.Account$transactionsToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$transactionsToArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  templates<T extends Prisma.Account$templatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$templatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recurringRules<T extends Prisma.Account$recurringRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$recurringRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecurringRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1816,6 +2064,54 @@ export type Account$transactionsToArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[]
+}
+
+/**
+ * Account.templates
+ */
+export type Account$templatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Template
+   */
+  select?: Prisma.TemplateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Template
+   */
+  omit?: Prisma.TemplateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TemplateInclude<ExtArgs> | null
+  where?: Prisma.TemplateWhereInput
+  orderBy?: Prisma.TemplateOrderByWithRelationInput | Prisma.TemplateOrderByWithRelationInput[]
+  cursor?: Prisma.TemplateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TemplateScalarFieldEnum | Prisma.TemplateScalarFieldEnum[]
+}
+
+/**
+ * Account.recurringRules
+ */
+export type Account$recurringRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecurringRule
+   */
+  select?: Prisma.RecurringRuleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecurringRule
+   */
+  omit?: Prisma.RecurringRuleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecurringRuleInclude<ExtArgs> | null
+  where?: Prisma.RecurringRuleWhereInput
+  orderBy?: Prisma.RecurringRuleOrderByWithRelationInput | Prisma.RecurringRuleOrderByWithRelationInput[]
+  cursor?: Prisma.RecurringRuleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecurringRuleScalarFieldEnum | Prisma.RecurringRuleScalarFieldEnum[]
 }
 
 /**

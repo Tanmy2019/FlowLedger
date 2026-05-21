@@ -198,6 +198,7 @@ export type LedgerWhereInput = {
   color?: Prisma.StringFilter<"Ledger"> | string
   ownerId?: Prisma.StringFilter<"Ledger"> | string
   createdAt?: Prisma.DateTimeFilter<"Ledger"> | Date | string
+  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   members?: Prisma.LedgerMemberListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
   categories?: Prisma.CategoryListRelationFilter
@@ -217,6 +218,7 @@ export type LedgerOrderByWithRelationInput = {
   color?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  owner?: Prisma.UserOrderByWithRelationInput
   members?: Prisma.LedgerMemberOrderByRelationAggregateInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
   categories?: Prisma.CategoryOrderByRelationAggregateInput
@@ -239,6 +241,7 @@ export type LedgerWhereUniqueInput = Prisma.AtLeast<{
   color?: Prisma.StringFilter<"Ledger"> | string
   ownerId?: Prisma.StringFilter<"Ledger"> | string
   createdAt?: Prisma.DateTimeFilter<"Ledger"> | Date | string
+  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   members?: Prisma.LedgerMemberListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
   categories?: Prisma.CategoryListRelationFilter
@@ -282,8 +285,8 @@ export type LedgerCreateInput = {
   type?: string
   icon?: string
   color?: string
-  ownerId: string
   createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedLedgersInput
   members?: Prisma.LedgerMemberCreateNestedManyWithoutLedgerInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutLedgerInput
   categories?: Prisma.CategoryCreateNestedManyWithoutLedgerInput
@@ -320,8 +323,8 @@ export type LedgerUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedLedgersNestedInput
   members?: Prisma.LedgerMemberUpdateManyWithoutLedgerNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutLedgerNestedInput
   categories?: Prisma.CategoryUpdateManyWithoutLedgerNestedInput
@@ -368,7 +371,6 @@ export type LedgerUpdateManyMutationInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -380,6 +382,16 @@ export type LedgerUncheckedUpdateManyInput = {
   color?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type LedgerListRelationFilter = {
+  every?: Prisma.LedgerWhereInput
+  some?: Prisma.LedgerWhereInput
+  none?: Prisma.LedgerWhereInput
+}
+
+export type LedgerOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type LedgerCountOrderByAggregateInput = {
@@ -415,6 +427,48 @@ export type LedgerMinOrderByAggregateInput = {
 export type LedgerScalarRelationFilter = {
   is?: Prisma.LedgerWhereInput
   isNot?: Prisma.LedgerWhereInput
+}
+
+export type LedgerCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.LedgerCreateWithoutOwnerInput, Prisma.LedgerUncheckedCreateWithoutOwnerInput> | Prisma.LedgerCreateWithoutOwnerInput[] | Prisma.LedgerUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.LedgerCreateOrConnectWithoutOwnerInput | Prisma.LedgerCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.LedgerCreateManyOwnerInputEnvelope
+  connect?: Prisma.LedgerWhereUniqueInput | Prisma.LedgerWhereUniqueInput[]
+}
+
+export type LedgerUncheckedCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.LedgerCreateWithoutOwnerInput, Prisma.LedgerUncheckedCreateWithoutOwnerInput> | Prisma.LedgerCreateWithoutOwnerInput[] | Prisma.LedgerUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.LedgerCreateOrConnectWithoutOwnerInput | Prisma.LedgerCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.LedgerCreateManyOwnerInputEnvelope
+  connect?: Prisma.LedgerWhereUniqueInput | Prisma.LedgerWhereUniqueInput[]
+}
+
+export type LedgerUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.LedgerCreateWithoutOwnerInput, Prisma.LedgerUncheckedCreateWithoutOwnerInput> | Prisma.LedgerCreateWithoutOwnerInput[] | Prisma.LedgerUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.LedgerCreateOrConnectWithoutOwnerInput | Prisma.LedgerCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.LedgerUpsertWithWhereUniqueWithoutOwnerInput | Prisma.LedgerUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.LedgerCreateManyOwnerInputEnvelope
+  set?: Prisma.LedgerWhereUniqueInput | Prisma.LedgerWhereUniqueInput[]
+  disconnect?: Prisma.LedgerWhereUniqueInput | Prisma.LedgerWhereUniqueInput[]
+  delete?: Prisma.LedgerWhereUniqueInput | Prisma.LedgerWhereUniqueInput[]
+  connect?: Prisma.LedgerWhereUniqueInput | Prisma.LedgerWhereUniqueInput[]
+  update?: Prisma.LedgerUpdateWithWhereUniqueWithoutOwnerInput | Prisma.LedgerUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.LedgerUpdateManyWithWhereWithoutOwnerInput | Prisma.LedgerUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.LedgerScalarWhereInput | Prisma.LedgerScalarWhereInput[]
+}
+
+export type LedgerUncheckedUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.LedgerCreateWithoutOwnerInput, Prisma.LedgerUncheckedCreateWithoutOwnerInput> | Prisma.LedgerCreateWithoutOwnerInput[] | Prisma.LedgerUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.LedgerCreateOrConnectWithoutOwnerInput | Prisma.LedgerCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.LedgerUpsertWithWhereUniqueWithoutOwnerInput | Prisma.LedgerUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.LedgerCreateManyOwnerInputEnvelope
+  set?: Prisma.LedgerWhereUniqueInput | Prisma.LedgerWhereUniqueInput[]
+  disconnect?: Prisma.LedgerWhereUniqueInput | Prisma.LedgerWhereUniqueInput[]
+  delete?: Prisma.LedgerWhereUniqueInput | Prisma.LedgerWhereUniqueInput[]
+  connect?: Prisma.LedgerWhereUniqueInput | Prisma.LedgerWhereUniqueInput[]
+  update?: Prisma.LedgerUpdateWithWhereUniqueWithoutOwnerInput | Prisma.LedgerUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.LedgerUpdateManyWithWhereWithoutOwnerInput | Prisma.LedgerUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.LedgerScalarWhereInput | Prisma.LedgerScalarWhereInput[]
 }
 
 export type LedgerCreateNestedOneWithoutMembersInput = {
@@ -543,14 +597,88 @@ export type LedgerUpdateOneRequiredWithoutRulesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LedgerUpdateToOneWithWhereWithoutRulesInput, Prisma.LedgerUpdateWithoutRulesInput>, Prisma.LedgerUncheckedUpdateWithoutRulesInput>
 }
 
+export type LedgerCreateWithoutOwnerInput = {
+  id?: string
+  name: string
+  type?: string
+  icon?: string
+  color?: string
+  createdAt?: Date | string
+  members?: Prisma.LedgerMemberCreateNestedManyWithoutLedgerInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutLedgerInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutLedgerInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutLedgerInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutLedgerInput
+  tags?: Prisma.TagCreateNestedManyWithoutLedgerInput
+  templates?: Prisma.TemplateCreateNestedManyWithoutLedgerInput
+  recurringRules?: Prisma.RecurringRuleCreateNestedManyWithoutLedgerInput
+  rules?: Prisma.RuleCreateNestedManyWithoutLedgerInput
+}
+
+export type LedgerUncheckedCreateWithoutOwnerInput = {
+  id?: string
+  name: string
+  type?: string
+  icon?: string
+  color?: string
+  createdAt?: Date | string
+  members?: Prisma.LedgerMemberUncheckedCreateNestedManyWithoutLedgerInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutLedgerInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutLedgerInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutLedgerInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutLedgerInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutLedgerInput
+  templates?: Prisma.TemplateUncheckedCreateNestedManyWithoutLedgerInput
+  recurringRules?: Prisma.RecurringRuleUncheckedCreateNestedManyWithoutLedgerInput
+  rules?: Prisma.RuleUncheckedCreateNestedManyWithoutLedgerInput
+}
+
+export type LedgerCreateOrConnectWithoutOwnerInput = {
+  where: Prisma.LedgerWhereUniqueInput
+  create: Prisma.XOR<Prisma.LedgerCreateWithoutOwnerInput, Prisma.LedgerUncheckedCreateWithoutOwnerInput>
+}
+
+export type LedgerCreateManyOwnerInputEnvelope = {
+  data: Prisma.LedgerCreateManyOwnerInput | Prisma.LedgerCreateManyOwnerInput[]
+}
+
+export type LedgerUpsertWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.LedgerWhereUniqueInput
+  update: Prisma.XOR<Prisma.LedgerUpdateWithoutOwnerInput, Prisma.LedgerUncheckedUpdateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.LedgerCreateWithoutOwnerInput, Prisma.LedgerUncheckedCreateWithoutOwnerInput>
+}
+
+export type LedgerUpdateWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.LedgerWhereUniqueInput
+  data: Prisma.XOR<Prisma.LedgerUpdateWithoutOwnerInput, Prisma.LedgerUncheckedUpdateWithoutOwnerInput>
+}
+
+export type LedgerUpdateManyWithWhereWithoutOwnerInput = {
+  where: Prisma.LedgerScalarWhereInput
+  data: Prisma.XOR<Prisma.LedgerUpdateManyMutationInput, Prisma.LedgerUncheckedUpdateManyWithoutOwnerInput>
+}
+
+export type LedgerScalarWhereInput = {
+  AND?: Prisma.LedgerScalarWhereInput | Prisma.LedgerScalarWhereInput[]
+  OR?: Prisma.LedgerScalarWhereInput[]
+  NOT?: Prisma.LedgerScalarWhereInput | Prisma.LedgerScalarWhereInput[]
+  id?: Prisma.StringFilter<"Ledger"> | string
+  name?: Prisma.StringFilter<"Ledger"> | string
+  type?: Prisma.StringFilter<"Ledger"> | string
+  icon?: Prisma.StringFilter<"Ledger"> | string
+  color?: Prisma.StringFilter<"Ledger"> | string
+  ownerId?: Prisma.StringFilter<"Ledger"> | string
+  createdAt?: Prisma.DateTimeFilter<"Ledger"> | Date | string
+}
+
 export type LedgerCreateWithoutMembersInput = {
   id?: string
   name: string
   type?: string
   icon?: string
   color?: string
-  ownerId: string
   createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedLedgersInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutLedgerInput
   categories?: Prisma.CategoryCreateNestedManyWithoutLedgerInput
   accounts?: Prisma.AccountCreateNestedManyWithoutLedgerInput
@@ -601,8 +729,8 @@ export type LedgerUpdateWithoutMembersInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedLedgersNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutLedgerNestedInput
   categories?: Prisma.CategoryUpdateManyWithoutLedgerNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutLedgerNestedInput
@@ -637,8 +765,8 @@ export type LedgerCreateWithoutCategoriesInput = {
   type?: string
   icon?: string
   color?: string
-  ownerId: string
   createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedLedgersInput
   members?: Prisma.LedgerMemberCreateNestedManyWithoutLedgerInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutLedgerInput
   accounts?: Prisma.AccountCreateNestedManyWithoutLedgerInput
@@ -689,8 +817,8 @@ export type LedgerUpdateWithoutCategoriesInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedLedgersNestedInput
   members?: Prisma.LedgerMemberUpdateManyWithoutLedgerNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutLedgerNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutLedgerNestedInput
@@ -725,8 +853,8 @@ export type LedgerCreateWithoutAccountsInput = {
   type?: string
   icon?: string
   color?: string
-  ownerId: string
   createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedLedgersInput
   members?: Prisma.LedgerMemberCreateNestedManyWithoutLedgerInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutLedgerInput
   categories?: Prisma.CategoryCreateNestedManyWithoutLedgerInput
@@ -777,8 +905,8 @@ export type LedgerUpdateWithoutAccountsInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedLedgersNestedInput
   members?: Prisma.LedgerMemberUpdateManyWithoutLedgerNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutLedgerNestedInput
   categories?: Prisma.CategoryUpdateManyWithoutLedgerNestedInput
@@ -813,8 +941,8 @@ export type LedgerCreateWithoutTransactionsInput = {
   type?: string
   icon?: string
   color?: string
-  ownerId: string
   createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedLedgersInput
   members?: Prisma.LedgerMemberCreateNestedManyWithoutLedgerInput
   categories?: Prisma.CategoryCreateNestedManyWithoutLedgerInput
   accounts?: Prisma.AccountCreateNestedManyWithoutLedgerInput
@@ -865,8 +993,8 @@ export type LedgerUpdateWithoutTransactionsInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedLedgersNestedInput
   members?: Prisma.LedgerMemberUpdateManyWithoutLedgerNestedInput
   categories?: Prisma.CategoryUpdateManyWithoutLedgerNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutLedgerNestedInput
@@ -901,8 +1029,8 @@ export type LedgerCreateWithoutTagsInput = {
   type?: string
   icon?: string
   color?: string
-  ownerId: string
   createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedLedgersInput
   members?: Prisma.LedgerMemberCreateNestedManyWithoutLedgerInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutLedgerInput
   categories?: Prisma.CategoryCreateNestedManyWithoutLedgerInput
@@ -953,8 +1081,8 @@ export type LedgerUpdateWithoutTagsInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedLedgersNestedInput
   members?: Prisma.LedgerMemberUpdateManyWithoutLedgerNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutLedgerNestedInput
   categories?: Prisma.CategoryUpdateManyWithoutLedgerNestedInput
@@ -989,8 +1117,8 @@ export type LedgerCreateWithoutBudgetsInput = {
   type?: string
   icon?: string
   color?: string
-  ownerId: string
   createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedLedgersInput
   members?: Prisma.LedgerMemberCreateNestedManyWithoutLedgerInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutLedgerInput
   categories?: Prisma.CategoryCreateNestedManyWithoutLedgerInput
@@ -1041,8 +1169,8 @@ export type LedgerUpdateWithoutBudgetsInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedLedgersNestedInput
   members?: Prisma.LedgerMemberUpdateManyWithoutLedgerNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutLedgerNestedInput
   categories?: Prisma.CategoryUpdateManyWithoutLedgerNestedInput
@@ -1077,8 +1205,8 @@ export type LedgerCreateWithoutTemplatesInput = {
   type?: string
   icon?: string
   color?: string
-  ownerId: string
   createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedLedgersInput
   members?: Prisma.LedgerMemberCreateNestedManyWithoutLedgerInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutLedgerInput
   categories?: Prisma.CategoryCreateNestedManyWithoutLedgerInput
@@ -1129,8 +1257,8 @@ export type LedgerUpdateWithoutTemplatesInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedLedgersNestedInput
   members?: Prisma.LedgerMemberUpdateManyWithoutLedgerNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutLedgerNestedInput
   categories?: Prisma.CategoryUpdateManyWithoutLedgerNestedInput
@@ -1165,8 +1293,8 @@ export type LedgerCreateWithoutRecurringRulesInput = {
   type?: string
   icon?: string
   color?: string
-  ownerId: string
   createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedLedgersInput
   members?: Prisma.LedgerMemberCreateNestedManyWithoutLedgerInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutLedgerInput
   categories?: Prisma.CategoryCreateNestedManyWithoutLedgerInput
@@ -1217,8 +1345,8 @@ export type LedgerUpdateWithoutRecurringRulesInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedLedgersNestedInput
   members?: Prisma.LedgerMemberUpdateManyWithoutLedgerNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutLedgerNestedInput
   categories?: Prisma.CategoryUpdateManyWithoutLedgerNestedInput
@@ -1253,8 +1381,8 @@ export type LedgerCreateWithoutRulesInput = {
   type?: string
   icon?: string
   color?: string
-  ownerId: string
   createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutOwnedLedgersInput
   members?: Prisma.LedgerMemberCreateNestedManyWithoutLedgerInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutLedgerInput
   categories?: Prisma.CategoryCreateNestedManyWithoutLedgerInput
@@ -1305,8 +1433,8 @@ export type LedgerUpdateWithoutRulesInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   icon?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedLedgersNestedInput
   members?: Prisma.LedgerMemberUpdateManyWithoutLedgerNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutLedgerNestedInput
   categories?: Prisma.CategoryUpdateManyWithoutLedgerNestedInput
@@ -1333,6 +1461,60 @@ export type LedgerUncheckedUpdateWithoutRulesInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutLedgerNestedInput
   templates?: Prisma.TemplateUncheckedUpdateManyWithoutLedgerNestedInput
   recurringRules?: Prisma.RecurringRuleUncheckedUpdateManyWithoutLedgerNestedInput
+}
+
+export type LedgerCreateManyOwnerInput = {
+  id?: string
+  name: string
+  type?: string
+  icon?: string
+  color?: string
+  createdAt?: Date | string
+}
+
+export type LedgerUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.LedgerMemberUpdateManyWithoutLedgerNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutLedgerNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutLedgerNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutLedgerNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutLedgerNestedInput
+  tags?: Prisma.TagUpdateManyWithoutLedgerNestedInput
+  templates?: Prisma.TemplateUpdateManyWithoutLedgerNestedInput
+  recurringRules?: Prisma.RecurringRuleUpdateManyWithoutLedgerNestedInput
+  rules?: Prisma.RuleUpdateManyWithoutLedgerNestedInput
+}
+
+export type LedgerUncheckedUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.LedgerMemberUncheckedUpdateManyWithoutLedgerNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutLedgerNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutLedgerNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutLedgerNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutLedgerNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutLedgerNestedInput
+  templates?: Prisma.TemplateUncheckedUpdateManyWithoutLedgerNestedInput
+  recurringRules?: Prisma.RecurringRuleUncheckedUpdateManyWithoutLedgerNestedInput
+  rules?: Prisma.RuleUncheckedUpdateManyWithoutLedgerNestedInput
+}
+
+export type LedgerUncheckedUpdateManyWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -1446,6 +1628,7 @@ export type LedgerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   color?: boolean
   ownerId?: boolean
   createdAt?: boolean
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Ledger$membersArgs<ExtArgs>
   transactions?: boolean | Prisma.Ledger$transactionsArgs<ExtArgs>
   categories?: boolean | Prisma.Ledger$categoriesArgs<ExtArgs>
@@ -1466,6 +1649,7 @@ export type LedgerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   color?: boolean
   ownerId?: boolean
   createdAt?: boolean
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ledger"]>
 
 export type LedgerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1476,6 +1660,7 @@ export type LedgerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   color?: boolean
   ownerId?: boolean
   createdAt?: boolean
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ledger"]>
 
 export type LedgerSelectScalar = {
@@ -1490,6 +1675,7 @@ export type LedgerSelectScalar = {
 
 export type LedgerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "icon" | "color" | "ownerId" | "createdAt", ExtArgs["result"]["ledger"]>
 export type LedgerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Ledger$membersArgs<ExtArgs>
   transactions?: boolean | Prisma.Ledger$transactionsArgs<ExtArgs>
   categories?: boolean | Prisma.Ledger$categoriesArgs<ExtArgs>
@@ -1501,12 +1687,17 @@ export type LedgerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   rules?: boolean | Prisma.Ledger$rulesArgs<ExtArgs>
   _count?: boolean | Prisma.LedgerCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type LedgerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type LedgerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type LedgerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type LedgerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $LedgerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Ledger"
   objects: {
+    owner: Prisma.$UserPayload<ExtArgs>
     members: Prisma.$LedgerMemberPayload<ExtArgs>[]
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
     categories: Prisma.$CategoryPayload<ExtArgs>[]
@@ -1919,6 +2110,7 @@ readonly fields: LedgerFieldRefs;
  */
 export interface Prisma__LedgerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   members<T extends Prisma.Ledger$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ledger$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LedgerMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transactions<T extends Prisma.Ledger$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ledger$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   categories<T extends Prisma.Ledger$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Ledger$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2216,6 +2408,10 @@ export type LedgerCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * The data used to create many Ledgers.
    */
   data: Prisma.LedgerCreateManyInput | Prisma.LedgerCreateManyInput[]
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LedgerIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2286,6 +2482,10 @@ export type LedgerUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many Ledgers to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LedgerIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

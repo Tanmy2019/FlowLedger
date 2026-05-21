@@ -14,6 +14,7 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
   ledgers      LedgerMember[]
+  ownedLedgers Ledger[]
 }
 
 model Ledger {
@@ -24,6 +25,7 @@ model Ledger {
   color     String   @default("#3B82F6")
   ownerId   String
   createdAt DateTime @default(now())
+  owner     User     @relation(fields: [ownerId], references: [id])
   members   LedgerMember[]
   transactions Transaction[]
   categories   Category[]
@@ -41,7 +43,7 @@ model LedgerMember {
   ledgerId  String
   role      String   @default("viewer")
   joinedAt  DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   ledger    Ledger   @relation(fields: [ledgerId], references: [id], onDelete: Cascade)
   transactions Transaction[]
   @@unique([userId, ledgerId])
@@ -61,6 +63,8 @@ model Category {
   children  Category[] @relation("CategoryHierarchy")
   transactions Transaction[]
   budgets      Budget[]
+  templates    Template[]
+  recurringRules RecurringRule[]
 }
 
 model Account {
@@ -76,6 +80,8 @@ model Account {
   ledger         Ledger   @relation(fields: [ledgerId], references: [id], onDelete: Cascade)
   transactionsFrom Transaction[] @relation("FromAccount")
   transactionsTo   Transaction[] @relation("ToAccount")
+  templates        Template[]
+  recurringRules   RecurringRule[]
 }
 
 model Transaction {
@@ -96,10 +102,10 @@ model Transaction {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   ledger      Ledger     @relation(fields: [ledgerId], references: [id], onDelete: Cascade)
-  category    Category?  @relation(fields: [categoryId], references: [id])
-  account     Account?   @relation("FromAccount", fields: [accountId], references: [id])
-  toAccount   Account?   @relation("ToAccount", fields: [toAccountId], references: [id])
-  member      LedgerMember? @relation(fields: [memberId], references: [id])
+  category    Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  account     Account?   @relation("FromAccount", fields: [accountId], references: [id], onDelete: SetNull)
+  toAccount   Account?   @relation("ToAccount", fields: [toAccountId], references: [id], onDelete: SetNull)
+  member      LedgerMember? @relation(fields: [memberId], references: [id], onDelete: SetNull)
   tags        TransactionTag[]
 }
 
@@ -131,19 +137,21 @@ model Budget {
   categoryId String?
   type       String   @default("all")
   ledger     Ledger   @relation(fields: [ledgerId], references: [id], onDelete: Cascade)
-  category   Category? @relation(fields: [categoryId], references: [id])
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 }
 
 model Template {
-  id        String   @id @default(cuid())
-  ledgerId  String
-  name      String
-  type      String
-  amount    Float?
+  id         String   @id @default(cuid())
+  ledgerId   String
+  name       String
+  type       String
+  amount     Float?
   categoryId String?
-  accountId String?
-  note      String?
-  ledger    Ledger   @relation(fields: [ledgerId], references: [id], onDelete: Cascade)
+  accountId  String?
+  note       String?
+  ledger     Ledger   @relation(fields: [ledgerId], references: [id], onDelete: Cascade)
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  account    Account?  @relation(fields: [accountId], references: [id], onDelete: SetNull)
 }
 
 model RecurringRule {
@@ -159,6 +167,8 @@ model RecurringRule {
   nextRunDate    DateTime
   isActive       Boolean  @default(true)
   ledger         Ledger   @relation(fields: [ledgerId], references: [id], onDelete: Cascade)
+  category       Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  account        Account?  @relation(fields: [accountId], references: [id], onDelete: SetNull)
 }
 
 model Rule {

@@ -241,6 +241,8 @@ export type TemplateWhereInput = {
   accountId?: Prisma.StringNullableFilter<"Template"> | string | null
   note?: Prisma.StringNullableFilter<"Template"> | string | null
   ledger?: Prisma.XOR<Prisma.LedgerScalarRelationFilter, Prisma.LedgerWhereInput>
+  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  account?: Prisma.XOR<Prisma.AccountNullableScalarRelationFilter, Prisma.AccountWhereInput> | null
 }
 
 export type TemplateOrderByWithRelationInput = {
@@ -253,6 +255,8 @@ export type TemplateOrderByWithRelationInput = {
   accountId?: Prisma.SortOrderInput | Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   ledger?: Prisma.LedgerOrderByWithRelationInput
+  category?: Prisma.CategoryOrderByWithRelationInput
+  account?: Prisma.AccountOrderByWithRelationInput
 }
 
 export type TemplateWhereUniqueInput = Prisma.AtLeast<{
@@ -268,6 +272,8 @@ export type TemplateWhereUniqueInput = Prisma.AtLeast<{
   accountId?: Prisma.StringNullableFilter<"Template"> | string | null
   note?: Prisma.StringNullableFilter<"Template"> | string | null
   ledger?: Prisma.XOR<Prisma.LedgerScalarRelationFilter, Prisma.LedgerWhereInput>
+  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  account?: Prisma.XOR<Prisma.AccountNullableScalarRelationFilter, Prisma.AccountWhereInput> | null
 }, "id">
 
 export type TemplateOrderByWithAggregationInput = {
@@ -305,10 +311,10 @@ export type TemplateCreateInput = {
   name: string
   type: string
   amount?: number | null
-  categoryId?: string | null
-  accountId?: string | null
   note?: string | null
   ledger: Prisma.LedgerCreateNestedOneWithoutTemplatesInput
+  category?: Prisma.CategoryCreateNestedOneWithoutTemplatesInput
+  account?: Prisma.AccountCreateNestedOneWithoutTemplatesInput
 }
 
 export type TemplateUncheckedCreateInput = {
@@ -327,10 +333,10 @@ export type TemplateUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ledger?: Prisma.LedgerUpdateOneRequiredWithoutTemplatesNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutTemplatesNestedInput
+  account?: Prisma.AccountUpdateOneWithoutTemplatesNestedInput
 }
 
 export type TemplateUncheckedUpdateInput = {
@@ -360,8 +366,6 @@ export type TemplateUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -469,6 +473,90 @@ export type TemplateUncheckedUpdateManyWithoutLedgerNestedInput = {
   deleteMany?: Prisma.TemplateScalarWhereInput | Prisma.TemplateScalarWhereInput[]
 }
 
+export type TemplateCreateNestedManyWithoutCategoryInput = {
+  create?: Prisma.XOR<Prisma.TemplateCreateWithoutCategoryInput, Prisma.TemplateUncheckedCreateWithoutCategoryInput> | Prisma.TemplateCreateWithoutCategoryInput[] | Prisma.TemplateUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.TemplateCreateOrConnectWithoutCategoryInput | Prisma.TemplateCreateOrConnectWithoutCategoryInput[]
+  createMany?: Prisma.TemplateCreateManyCategoryInputEnvelope
+  connect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+}
+
+export type TemplateUncheckedCreateNestedManyWithoutCategoryInput = {
+  create?: Prisma.XOR<Prisma.TemplateCreateWithoutCategoryInput, Prisma.TemplateUncheckedCreateWithoutCategoryInput> | Prisma.TemplateCreateWithoutCategoryInput[] | Prisma.TemplateUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.TemplateCreateOrConnectWithoutCategoryInput | Prisma.TemplateCreateOrConnectWithoutCategoryInput[]
+  createMany?: Prisma.TemplateCreateManyCategoryInputEnvelope
+  connect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+}
+
+export type TemplateUpdateManyWithoutCategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.TemplateCreateWithoutCategoryInput, Prisma.TemplateUncheckedCreateWithoutCategoryInput> | Prisma.TemplateCreateWithoutCategoryInput[] | Prisma.TemplateUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.TemplateCreateOrConnectWithoutCategoryInput | Prisma.TemplateCreateOrConnectWithoutCategoryInput[]
+  upsert?: Prisma.TemplateUpsertWithWhereUniqueWithoutCategoryInput | Prisma.TemplateUpsertWithWhereUniqueWithoutCategoryInput[]
+  createMany?: Prisma.TemplateCreateManyCategoryInputEnvelope
+  set?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  disconnect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  delete?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  connect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  update?: Prisma.TemplateUpdateWithWhereUniqueWithoutCategoryInput | Prisma.TemplateUpdateWithWhereUniqueWithoutCategoryInput[]
+  updateMany?: Prisma.TemplateUpdateManyWithWhereWithoutCategoryInput | Prisma.TemplateUpdateManyWithWhereWithoutCategoryInput[]
+  deleteMany?: Prisma.TemplateScalarWhereInput | Prisma.TemplateScalarWhereInput[]
+}
+
+export type TemplateUncheckedUpdateManyWithoutCategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.TemplateCreateWithoutCategoryInput, Prisma.TemplateUncheckedCreateWithoutCategoryInput> | Prisma.TemplateCreateWithoutCategoryInput[] | Prisma.TemplateUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.TemplateCreateOrConnectWithoutCategoryInput | Prisma.TemplateCreateOrConnectWithoutCategoryInput[]
+  upsert?: Prisma.TemplateUpsertWithWhereUniqueWithoutCategoryInput | Prisma.TemplateUpsertWithWhereUniqueWithoutCategoryInput[]
+  createMany?: Prisma.TemplateCreateManyCategoryInputEnvelope
+  set?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  disconnect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  delete?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  connect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  update?: Prisma.TemplateUpdateWithWhereUniqueWithoutCategoryInput | Prisma.TemplateUpdateWithWhereUniqueWithoutCategoryInput[]
+  updateMany?: Prisma.TemplateUpdateManyWithWhereWithoutCategoryInput | Prisma.TemplateUpdateManyWithWhereWithoutCategoryInput[]
+  deleteMany?: Prisma.TemplateScalarWhereInput | Prisma.TemplateScalarWhereInput[]
+}
+
+export type TemplateCreateNestedManyWithoutAccountInput = {
+  create?: Prisma.XOR<Prisma.TemplateCreateWithoutAccountInput, Prisma.TemplateUncheckedCreateWithoutAccountInput> | Prisma.TemplateCreateWithoutAccountInput[] | Prisma.TemplateUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.TemplateCreateOrConnectWithoutAccountInput | Prisma.TemplateCreateOrConnectWithoutAccountInput[]
+  createMany?: Prisma.TemplateCreateManyAccountInputEnvelope
+  connect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+}
+
+export type TemplateUncheckedCreateNestedManyWithoutAccountInput = {
+  create?: Prisma.XOR<Prisma.TemplateCreateWithoutAccountInput, Prisma.TemplateUncheckedCreateWithoutAccountInput> | Prisma.TemplateCreateWithoutAccountInput[] | Prisma.TemplateUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.TemplateCreateOrConnectWithoutAccountInput | Prisma.TemplateCreateOrConnectWithoutAccountInput[]
+  createMany?: Prisma.TemplateCreateManyAccountInputEnvelope
+  connect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+}
+
+export type TemplateUpdateManyWithoutAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.TemplateCreateWithoutAccountInput, Prisma.TemplateUncheckedCreateWithoutAccountInput> | Prisma.TemplateCreateWithoutAccountInput[] | Prisma.TemplateUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.TemplateCreateOrConnectWithoutAccountInput | Prisma.TemplateCreateOrConnectWithoutAccountInput[]
+  upsert?: Prisma.TemplateUpsertWithWhereUniqueWithoutAccountInput | Prisma.TemplateUpsertWithWhereUniqueWithoutAccountInput[]
+  createMany?: Prisma.TemplateCreateManyAccountInputEnvelope
+  set?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  disconnect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  delete?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  connect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  update?: Prisma.TemplateUpdateWithWhereUniqueWithoutAccountInput | Prisma.TemplateUpdateWithWhereUniqueWithoutAccountInput[]
+  updateMany?: Prisma.TemplateUpdateManyWithWhereWithoutAccountInput | Prisma.TemplateUpdateManyWithWhereWithoutAccountInput[]
+  deleteMany?: Prisma.TemplateScalarWhereInput | Prisma.TemplateScalarWhereInput[]
+}
+
+export type TemplateUncheckedUpdateManyWithoutAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.TemplateCreateWithoutAccountInput, Prisma.TemplateUncheckedCreateWithoutAccountInput> | Prisma.TemplateCreateWithoutAccountInput[] | Prisma.TemplateUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.TemplateCreateOrConnectWithoutAccountInput | Prisma.TemplateCreateOrConnectWithoutAccountInput[]
+  upsert?: Prisma.TemplateUpsertWithWhereUniqueWithoutAccountInput | Prisma.TemplateUpsertWithWhereUniqueWithoutAccountInput[]
+  createMany?: Prisma.TemplateCreateManyAccountInputEnvelope
+  set?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  disconnect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  delete?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  connect?: Prisma.TemplateWhereUniqueInput | Prisma.TemplateWhereUniqueInput[]
+  update?: Prisma.TemplateUpdateWithWhereUniqueWithoutAccountInput | Prisma.TemplateUpdateWithWhereUniqueWithoutAccountInput[]
+  updateMany?: Prisma.TemplateUpdateManyWithWhereWithoutAccountInput | Prisma.TemplateUpdateManyWithWhereWithoutAccountInput[]
+  deleteMany?: Prisma.TemplateScalarWhereInput | Prisma.TemplateScalarWhereInput[]
+}
+
 export type NullableFloatFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
@@ -482,9 +570,9 @@ export type TemplateCreateWithoutLedgerInput = {
   name: string
   type: string
   amount?: number | null
-  categoryId?: string | null
-  accountId?: string | null
   note?: string | null
+  category?: Prisma.CategoryCreateNestedOneWithoutTemplatesInput
+  account?: Prisma.AccountCreateNestedOneWithoutTemplatesInput
 }
 
 export type TemplateUncheckedCreateWithoutLedgerInput = {
@@ -536,6 +624,96 @@ export type TemplateScalarWhereInput = {
   note?: Prisma.StringNullableFilter<"Template"> | string | null
 }
 
+export type TemplateCreateWithoutCategoryInput = {
+  id?: string
+  name: string
+  type: string
+  amount?: number | null
+  note?: string | null
+  ledger: Prisma.LedgerCreateNestedOneWithoutTemplatesInput
+  account?: Prisma.AccountCreateNestedOneWithoutTemplatesInput
+}
+
+export type TemplateUncheckedCreateWithoutCategoryInput = {
+  id?: string
+  ledgerId: string
+  name: string
+  type: string
+  amount?: number | null
+  accountId?: string | null
+  note?: string | null
+}
+
+export type TemplateCreateOrConnectWithoutCategoryInput = {
+  where: Prisma.TemplateWhereUniqueInput
+  create: Prisma.XOR<Prisma.TemplateCreateWithoutCategoryInput, Prisma.TemplateUncheckedCreateWithoutCategoryInput>
+}
+
+export type TemplateCreateManyCategoryInputEnvelope = {
+  data: Prisma.TemplateCreateManyCategoryInput | Prisma.TemplateCreateManyCategoryInput[]
+}
+
+export type TemplateUpsertWithWhereUniqueWithoutCategoryInput = {
+  where: Prisma.TemplateWhereUniqueInput
+  update: Prisma.XOR<Prisma.TemplateUpdateWithoutCategoryInput, Prisma.TemplateUncheckedUpdateWithoutCategoryInput>
+  create: Prisma.XOR<Prisma.TemplateCreateWithoutCategoryInput, Prisma.TemplateUncheckedCreateWithoutCategoryInput>
+}
+
+export type TemplateUpdateWithWhereUniqueWithoutCategoryInput = {
+  where: Prisma.TemplateWhereUniqueInput
+  data: Prisma.XOR<Prisma.TemplateUpdateWithoutCategoryInput, Prisma.TemplateUncheckedUpdateWithoutCategoryInput>
+}
+
+export type TemplateUpdateManyWithWhereWithoutCategoryInput = {
+  where: Prisma.TemplateScalarWhereInput
+  data: Prisma.XOR<Prisma.TemplateUpdateManyMutationInput, Prisma.TemplateUncheckedUpdateManyWithoutCategoryInput>
+}
+
+export type TemplateCreateWithoutAccountInput = {
+  id?: string
+  name: string
+  type: string
+  amount?: number | null
+  note?: string | null
+  ledger: Prisma.LedgerCreateNestedOneWithoutTemplatesInput
+  category?: Prisma.CategoryCreateNestedOneWithoutTemplatesInput
+}
+
+export type TemplateUncheckedCreateWithoutAccountInput = {
+  id?: string
+  ledgerId: string
+  name: string
+  type: string
+  amount?: number | null
+  categoryId?: string | null
+  note?: string | null
+}
+
+export type TemplateCreateOrConnectWithoutAccountInput = {
+  where: Prisma.TemplateWhereUniqueInput
+  create: Prisma.XOR<Prisma.TemplateCreateWithoutAccountInput, Prisma.TemplateUncheckedCreateWithoutAccountInput>
+}
+
+export type TemplateCreateManyAccountInputEnvelope = {
+  data: Prisma.TemplateCreateManyAccountInput | Prisma.TemplateCreateManyAccountInput[]
+}
+
+export type TemplateUpsertWithWhereUniqueWithoutAccountInput = {
+  where: Prisma.TemplateWhereUniqueInput
+  update: Prisma.XOR<Prisma.TemplateUpdateWithoutAccountInput, Prisma.TemplateUncheckedUpdateWithoutAccountInput>
+  create: Prisma.XOR<Prisma.TemplateCreateWithoutAccountInput, Prisma.TemplateUncheckedCreateWithoutAccountInput>
+}
+
+export type TemplateUpdateWithWhereUniqueWithoutAccountInput = {
+  where: Prisma.TemplateWhereUniqueInput
+  data: Prisma.XOR<Prisma.TemplateUpdateWithoutAccountInput, Prisma.TemplateUncheckedUpdateWithoutAccountInput>
+}
+
+export type TemplateUpdateManyWithWhereWithoutAccountInput = {
+  where: Prisma.TemplateScalarWhereInput
+  data: Prisma.XOR<Prisma.TemplateUpdateManyMutationInput, Prisma.TemplateUncheckedUpdateManyWithoutAccountInput>
+}
+
 export type TemplateCreateManyLedgerInput = {
   id?: string
   name: string
@@ -551,9 +729,9 @@ export type TemplateUpdateWithoutLedgerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.CategoryUpdateOneWithoutTemplatesNestedInput
+  account?: Prisma.AccountUpdateOneWithoutTemplatesNestedInput
 }
 
 export type TemplateUncheckedUpdateWithoutLedgerInput = {
@@ -576,6 +754,86 @@ export type TemplateUncheckedUpdateManyWithoutLedgerInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
+export type TemplateCreateManyCategoryInput = {
+  id?: string
+  ledgerId: string
+  name: string
+  type: string
+  amount?: number | null
+  accountId?: string | null
+  note?: string | null
+}
+
+export type TemplateUpdateWithoutCategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ledger?: Prisma.LedgerUpdateOneRequiredWithoutTemplatesNestedInput
+  account?: Prisma.AccountUpdateOneWithoutTemplatesNestedInput
+}
+
+export type TemplateUncheckedUpdateWithoutCategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ledgerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type TemplateUncheckedUpdateManyWithoutCategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ledgerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type TemplateCreateManyAccountInput = {
+  id?: string
+  ledgerId: string
+  name: string
+  type: string
+  amount?: number | null
+  categoryId?: string | null
+  note?: string | null
+}
+
+export type TemplateUpdateWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ledger?: Prisma.LedgerUpdateOneRequiredWithoutTemplatesNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutTemplatesNestedInput
+}
+
+export type TemplateUncheckedUpdateWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ledgerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type TemplateUncheckedUpdateManyWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ledgerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
 
 
 export type TemplateSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -588,6 +846,8 @@ export type TemplateSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   accountId?: boolean
   note?: boolean
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.Template$accountArgs<ExtArgs>
 }, ExtArgs["result"]["template"]>
 
 export type TemplateSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -600,6 +860,8 @@ export type TemplateSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   accountId?: boolean
   note?: boolean
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.Template$accountArgs<ExtArgs>
 }, ExtArgs["result"]["template"]>
 
 export type TemplateSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -612,6 +874,8 @@ export type TemplateSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   accountId?: boolean
   note?: boolean
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.Template$accountArgs<ExtArgs>
 }, ExtArgs["result"]["template"]>
 
 export type TemplateSelectScalar = {
@@ -628,18 +892,26 @@ export type TemplateSelectScalar = {
 export type TemplateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ledgerId" | "name" | "type" | "amount" | "categoryId" | "accountId" | "note", ExtArgs["result"]["template"]>
 export type TemplateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.Template$accountArgs<ExtArgs>
 }
 export type TemplateIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.Template$accountArgs<ExtArgs>
 }
 export type TemplateIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Template$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.Template$accountArgs<ExtArgs>
 }
 
 export type $TemplatePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Template"
   objects: {
     ledger: Prisma.$LedgerPayload<ExtArgs>
+    category: Prisma.$CategoryPayload<ExtArgs> | null
+    account: Prisma.$AccountPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1045,6 +1317,8 @@ readonly fields: TemplateFieldRefs;
 export interface Prisma__TemplateClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   ledger<T extends Prisma.LedgerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LedgerDefaultArgs<ExtArgs>>): Prisma.Prisma__LedgerClient<runtime.Types.Result.GetResult<Prisma.$LedgerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  category<T extends Prisma.Template$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Template$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  account<T extends Prisma.Template$accountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Template$accountArgs<ExtArgs>>): Prisma.Prisma__AccountClient<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1478,6 +1752,44 @@ export type TemplateDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Templates to delete.
    */
   limit?: number
+}
+
+/**
+ * Template.category
+ */
+export type Template$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
+}
+
+/**
+ * Template.account
+ */
+export type Template$accountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Account
+   */
+  select?: Prisma.AccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Account
+   */
+  omit?: Prisma.AccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountInclude<ExtArgs> | null
+  where?: Prisma.AccountWhereInput
 }
 
 /**

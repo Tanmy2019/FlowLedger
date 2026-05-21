@@ -265,6 +265,8 @@ export type RecurringRuleWhereInput = {
   nextRunDate?: Prisma.DateTimeFilter<"RecurringRule"> | Date | string
   isActive?: Prisma.BoolFilter<"RecurringRule"> | boolean
   ledger?: Prisma.XOR<Prisma.LedgerScalarRelationFilter, Prisma.LedgerWhereInput>
+  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  account?: Prisma.XOR<Prisma.AccountNullableScalarRelationFilter, Prisma.AccountWhereInput> | null
 }
 
 export type RecurringRuleOrderByWithRelationInput = {
@@ -280,6 +282,8 @@ export type RecurringRuleOrderByWithRelationInput = {
   nextRunDate?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   ledger?: Prisma.LedgerOrderByWithRelationInput
+  category?: Prisma.CategoryOrderByWithRelationInput
+  account?: Prisma.AccountOrderByWithRelationInput
 }
 
 export type RecurringRuleWhereUniqueInput = Prisma.AtLeast<{
@@ -298,6 +302,8 @@ export type RecurringRuleWhereUniqueInput = Prisma.AtLeast<{
   nextRunDate?: Prisma.DateTimeFilter<"RecurringRule"> | Date | string
   isActive?: Prisma.BoolFilter<"RecurringRule"> | boolean
   ledger?: Prisma.XOR<Prisma.LedgerScalarRelationFilter, Prisma.LedgerWhereInput>
+  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  account?: Prisma.XOR<Prisma.AccountNullableScalarRelationFilter, Prisma.AccountWhereInput> | null
 }, "id">
 
 export type RecurringRuleOrderByWithAggregationInput = {
@@ -341,13 +347,13 @@ export type RecurringRuleCreateInput = {
   name: string
   type: string
   amount: number
-  categoryId?: string | null
-  accountId?: string | null
   note?: string | null
   cronExpression: string
   nextRunDate: Date | string
   isActive?: boolean
   ledger: Prisma.LedgerCreateNestedOneWithoutRecurringRulesInput
+  category?: Prisma.CategoryCreateNestedOneWithoutRecurringRulesInput
+  account?: Prisma.AccountCreateNestedOneWithoutRecurringRulesInput
 }
 
 export type RecurringRuleUncheckedCreateInput = {
@@ -369,13 +375,13 @@ export type RecurringRuleUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cronExpression?: Prisma.StringFieldUpdateOperationsInput | string
   nextRunDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ledger?: Prisma.LedgerUpdateOneRequiredWithoutRecurringRulesNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutRecurringRulesNestedInput
+  account?: Prisma.AccountUpdateOneWithoutRecurringRulesNestedInput
 }
 
 export type RecurringRuleUncheckedUpdateInput = {
@@ -411,8 +417,6 @@ export type RecurringRuleUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cronExpression?: Prisma.StringFieldUpdateOperationsInput | string
   nextRunDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -535,6 +539,90 @@ export type RecurringRuleUncheckedUpdateManyWithoutLedgerNestedInput = {
   deleteMany?: Prisma.RecurringRuleScalarWhereInput | Prisma.RecurringRuleScalarWhereInput[]
 }
 
+export type RecurringRuleCreateNestedManyWithoutCategoryInput = {
+  create?: Prisma.XOR<Prisma.RecurringRuleCreateWithoutCategoryInput, Prisma.RecurringRuleUncheckedCreateWithoutCategoryInput> | Prisma.RecurringRuleCreateWithoutCategoryInput[] | Prisma.RecurringRuleUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.RecurringRuleCreateOrConnectWithoutCategoryInput | Prisma.RecurringRuleCreateOrConnectWithoutCategoryInput[]
+  createMany?: Prisma.RecurringRuleCreateManyCategoryInputEnvelope
+  connect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+}
+
+export type RecurringRuleUncheckedCreateNestedManyWithoutCategoryInput = {
+  create?: Prisma.XOR<Prisma.RecurringRuleCreateWithoutCategoryInput, Prisma.RecurringRuleUncheckedCreateWithoutCategoryInput> | Prisma.RecurringRuleCreateWithoutCategoryInput[] | Prisma.RecurringRuleUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.RecurringRuleCreateOrConnectWithoutCategoryInput | Prisma.RecurringRuleCreateOrConnectWithoutCategoryInput[]
+  createMany?: Prisma.RecurringRuleCreateManyCategoryInputEnvelope
+  connect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+}
+
+export type RecurringRuleUpdateManyWithoutCategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.RecurringRuleCreateWithoutCategoryInput, Prisma.RecurringRuleUncheckedCreateWithoutCategoryInput> | Prisma.RecurringRuleCreateWithoutCategoryInput[] | Prisma.RecurringRuleUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.RecurringRuleCreateOrConnectWithoutCategoryInput | Prisma.RecurringRuleCreateOrConnectWithoutCategoryInput[]
+  upsert?: Prisma.RecurringRuleUpsertWithWhereUniqueWithoutCategoryInput | Prisma.RecurringRuleUpsertWithWhereUniqueWithoutCategoryInput[]
+  createMany?: Prisma.RecurringRuleCreateManyCategoryInputEnvelope
+  set?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  disconnect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  delete?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  connect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  update?: Prisma.RecurringRuleUpdateWithWhereUniqueWithoutCategoryInput | Prisma.RecurringRuleUpdateWithWhereUniqueWithoutCategoryInput[]
+  updateMany?: Prisma.RecurringRuleUpdateManyWithWhereWithoutCategoryInput | Prisma.RecurringRuleUpdateManyWithWhereWithoutCategoryInput[]
+  deleteMany?: Prisma.RecurringRuleScalarWhereInput | Prisma.RecurringRuleScalarWhereInput[]
+}
+
+export type RecurringRuleUncheckedUpdateManyWithoutCategoryNestedInput = {
+  create?: Prisma.XOR<Prisma.RecurringRuleCreateWithoutCategoryInput, Prisma.RecurringRuleUncheckedCreateWithoutCategoryInput> | Prisma.RecurringRuleCreateWithoutCategoryInput[] | Prisma.RecurringRuleUncheckedCreateWithoutCategoryInput[]
+  connectOrCreate?: Prisma.RecurringRuleCreateOrConnectWithoutCategoryInput | Prisma.RecurringRuleCreateOrConnectWithoutCategoryInput[]
+  upsert?: Prisma.RecurringRuleUpsertWithWhereUniqueWithoutCategoryInput | Prisma.RecurringRuleUpsertWithWhereUniqueWithoutCategoryInput[]
+  createMany?: Prisma.RecurringRuleCreateManyCategoryInputEnvelope
+  set?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  disconnect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  delete?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  connect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  update?: Prisma.RecurringRuleUpdateWithWhereUniqueWithoutCategoryInput | Prisma.RecurringRuleUpdateWithWhereUniqueWithoutCategoryInput[]
+  updateMany?: Prisma.RecurringRuleUpdateManyWithWhereWithoutCategoryInput | Prisma.RecurringRuleUpdateManyWithWhereWithoutCategoryInput[]
+  deleteMany?: Prisma.RecurringRuleScalarWhereInput | Prisma.RecurringRuleScalarWhereInput[]
+}
+
+export type RecurringRuleCreateNestedManyWithoutAccountInput = {
+  create?: Prisma.XOR<Prisma.RecurringRuleCreateWithoutAccountInput, Prisma.RecurringRuleUncheckedCreateWithoutAccountInput> | Prisma.RecurringRuleCreateWithoutAccountInput[] | Prisma.RecurringRuleUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.RecurringRuleCreateOrConnectWithoutAccountInput | Prisma.RecurringRuleCreateOrConnectWithoutAccountInput[]
+  createMany?: Prisma.RecurringRuleCreateManyAccountInputEnvelope
+  connect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+}
+
+export type RecurringRuleUncheckedCreateNestedManyWithoutAccountInput = {
+  create?: Prisma.XOR<Prisma.RecurringRuleCreateWithoutAccountInput, Prisma.RecurringRuleUncheckedCreateWithoutAccountInput> | Prisma.RecurringRuleCreateWithoutAccountInput[] | Prisma.RecurringRuleUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.RecurringRuleCreateOrConnectWithoutAccountInput | Prisma.RecurringRuleCreateOrConnectWithoutAccountInput[]
+  createMany?: Prisma.RecurringRuleCreateManyAccountInputEnvelope
+  connect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+}
+
+export type RecurringRuleUpdateManyWithoutAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.RecurringRuleCreateWithoutAccountInput, Prisma.RecurringRuleUncheckedCreateWithoutAccountInput> | Prisma.RecurringRuleCreateWithoutAccountInput[] | Prisma.RecurringRuleUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.RecurringRuleCreateOrConnectWithoutAccountInput | Prisma.RecurringRuleCreateOrConnectWithoutAccountInput[]
+  upsert?: Prisma.RecurringRuleUpsertWithWhereUniqueWithoutAccountInput | Prisma.RecurringRuleUpsertWithWhereUniqueWithoutAccountInput[]
+  createMany?: Prisma.RecurringRuleCreateManyAccountInputEnvelope
+  set?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  disconnect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  delete?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  connect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  update?: Prisma.RecurringRuleUpdateWithWhereUniqueWithoutAccountInput | Prisma.RecurringRuleUpdateWithWhereUniqueWithoutAccountInput[]
+  updateMany?: Prisma.RecurringRuleUpdateManyWithWhereWithoutAccountInput | Prisma.RecurringRuleUpdateManyWithWhereWithoutAccountInput[]
+  deleteMany?: Prisma.RecurringRuleScalarWhereInput | Prisma.RecurringRuleScalarWhereInput[]
+}
+
+export type RecurringRuleUncheckedUpdateManyWithoutAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.RecurringRuleCreateWithoutAccountInput, Prisma.RecurringRuleUncheckedCreateWithoutAccountInput> | Prisma.RecurringRuleCreateWithoutAccountInput[] | Prisma.RecurringRuleUncheckedCreateWithoutAccountInput[]
+  connectOrCreate?: Prisma.RecurringRuleCreateOrConnectWithoutAccountInput | Prisma.RecurringRuleCreateOrConnectWithoutAccountInput[]
+  upsert?: Prisma.RecurringRuleUpsertWithWhereUniqueWithoutAccountInput | Prisma.RecurringRuleUpsertWithWhereUniqueWithoutAccountInput[]
+  createMany?: Prisma.RecurringRuleCreateManyAccountInputEnvelope
+  set?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  disconnect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  delete?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  connect?: Prisma.RecurringRuleWhereUniqueInput | Prisma.RecurringRuleWhereUniqueInput[]
+  update?: Prisma.RecurringRuleUpdateWithWhereUniqueWithoutAccountInput | Prisma.RecurringRuleUpdateWithWhereUniqueWithoutAccountInput[]
+  updateMany?: Prisma.RecurringRuleUpdateManyWithWhereWithoutAccountInput | Prisma.RecurringRuleUpdateManyWithWhereWithoutAccountInput[]
+  deleteMany?: Prisma.RecurringRuleScalarWhereInput | Prisma.RecurringRuleScalarWhereInput[]
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
@@ -544,12 +632,12 @@ export type RecurringRuleCreateWithoutLedgerInput = {
   name: string
   type: string
   amount: number
-  categoryId?: string | null
-  accountId?: string | null
   note?: string | null
   cronExpression: string
   nextRunDate: Date | string
   isActive?: boolean
+  category?: Prisma.CategoryCreateNestedOneWithoutRecurringRulesInput
+  account?: Prisma.AccountCreateNestedOneWithoutRecurringRulesInput
 }
 
 export type RecurringRuleUncheckedCreateWithoutLedgerInput = {
@@ -607,6 +695,108 @@ export type RecurringRuleScalarWhereInput = {
   isActive?: Prisma.BoolFilter<"RecurringRule"> | boolean
 }
 
+export type RecurringRuleCreateWithoutCategoryInput = {
+  id?: string
+  name: string
+  type: string
+  amount: number
+  note?: string | null
+  cronExpression: string
+  nextRunDate: Date | string
+  isActive?: boolean
+  ledger: Prisma.LedgerCreateNestedOneWithoutRecurringRulesInput
+  account?: Prisma.AccountCreateNestedOneWithoutRecurringRulesInput
+}
+
+export type RecurringRuleUncheckedCreateWithoutCategoryInput = {
+  id?: string
+  ledgerId: string
+  name: string
+  type: string
+  amount: number
+  accountId?: string | null
+  note?: string | null
+  cronExpression: string
+  nextRunDate: Date | string
+  isActive?: boolean
+}
+
+export type RecurringRuleCreateOrConnectWithoutCategoryInput = {
+  where: Prisma.RecurringRuleWhereUniqueInput
+  create: Prisma.XOR<Prisma.RecurringRuleCreateWithoutCategoryInput, Prisma.RecurringRuleUncheckedCreateWithoutCategoryInput>
+}
+
+export type RecurringRuleCreateManyCategoryInputEnvelope = {
+  data: Prisma.RecurringRuleCreateManyCategoryInput | Prisma.RecurringRuleCreateManyCategoryInput[]
+}
+
+export type RecurringRuleUpsertWithWhereUniqueWithoutCategoryInput = {
+  where: Prisma.RecurringRuleWhereUniqueInput
+  update: Prisma.XOR<Prisma.RecurringRuleUpdateWithoutCategoryInput, Prisma.RecurringRuleUncheckedUpdateWithoutCategoryInput>
+  create: Prisma.XOR<Prisma.RecurringRuleCreateWithoutCategoryInput, Prisma.RecurringRuleUncheckedCreateWithoutCategoryInput>
+}
+
+export type RecurringRuleUpdateWithWhereUniqueWithoutCategoryInput = {
+  where: Prisma.RecurringRuleWhereUniqueInput
+  data: Prisma.XOR<Prisma.RecurringRuleUpdateWithoutCategoryInput, Prisma.RecurringRuleUncheckedUpdateWithoutCategoryInput>
+}
+
+export type RecurringRuleUpdateManyWithWhereWithoutCategoryInput = {
+  where: Prisma.RecurringRuleScalarWhereInput
+  data: Prisma.XOR<Prisma.RecurringRuleUpdateManyMutationInput, Prisma.RecurringRuleUncheckedUpdateManyWithoutCategoryInput>
+}
+
+export type RecurringRuleCreateWithoutAccountInput = {
+  id?: string
+  name: string
+  type: string
+  amount: number
+  note?: string | null
+  cronExpression: string
+  nextRunDate: Date | string
+  isActive?: boolean
+  ledger: Prisma.LedgerCreateNestedOneWithoutRecurringRulesInput
+  category?: Prisma.CategoryCreateNestedOneWithoutRecurringRulesInput
+}
+
+export type RecurringRuleUncheckedCreateWithoutAccountInput = {
+  id?: string
+  ledgerId: string
+  name: string
+  type: string
+  amount: number
+  categoryId?: string | null
+  note?: string | null
+  cronExpression: string
+  nextRunDate: Date | string
+  isActive?: boolean
+}
+
+export type RecurringRuleCreateOrConnectWithoutAccountInput = {
+  where: Prisma.RecurringRuleWhereUniqueInput
+  create: Prisma.XOR<Prisma.RecurringRuleCreateWithoutAccountInput, Prisma.RecurringRuleUncheckedCreateWithoutAccountInput>
+}
+
+export type RecurringRuleCreateManyAccountInputEnvelope = {
+  data: Prisma.RecurringRuleCreateManyAccountInput | Prisma.RecurringRuleCreateManyAccountInput[]
+}
+
+export type RecurringRuleUpsertWithWhereUniqueWithoutAccountInput = {
+  where: Prisma.RecurringRuleWhereUniqueInput
+  update: Prisma.XOR<Prisma.RecurringRuleUpdateWithoutAccountInput, Prisma.RecurringRuleUncheckedUpdateWithoutAccountInput>
+  create: Prisma.XOR<Prisma.RecurringRuleCreateWithoutAccountInput, Prisma.RecurringRuleUncheckedCreateWithoutAccountInput>
+}
+
+export type RecurringRuleUpdateWithWhereUniqueWithoutAccountInput = {
+  where: Prisma.RecurringRuleWhereUniqueInput
+  data: Prisma.XOR<Prisma.RecurringRuleUpdateWithoutAccountInput, Prisma.RecurringRuleUncheckedUpdateWithoutAccountInput>
+}
+
+export type RecurringRuleUpdateManyWithWhereWithoutAccountInput = {
+  where: Prisma.RecurringRuleScalarWhereInput
+  data: Prisma.XOR<Prisma.RecurringRuleUpdateManyMutationInput, Prisma.RecurringRuleUncheckedUpdateManyWithoutAccountInput>
+}
+
 export type RecurringRuleCreateManyLedgerInput = {
   id?: string
   name: string
@@ -625,12 +815,12 @@ export type RecurringRuleUpdateWithoutLedgerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cronExpression?: Prisma.StringFieldUpdateOperationsInput | string
   nextRunDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  category?: Prisma.CategoryUpdateOneWithoutRecurringRulesNestedInput
+  account?: Prisma.AccountUpdateOneWithoutRecurringRulesNestedInput
 }
 
 export type RecurringRuleUncheckedUpdateWithoutLedgerInput = {
@@ -659,6 +849,110 @@ export type RecurringRuleUncheckedUpdateManyWithoutLedgerInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
+export type RecurringRuleCreateManyCategoryInput = {
+  id?: string
+  ledgerId: string
+  name: string
+  type: string
+  amount: number
+  accountId?: string | null
+  note?: string | null
+  cronExpression: string
+  nextRunDate: Date | string
+  isActive?: boolean
+}
+
+export type RecurringRuleUpdateWithoutCategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cronExpression?: Prisma.StringFieldUpdateOperationsInput | string
+  nextRunDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ledger?: Prisma.LedgerUpdateOneRequiredWithoutRecurringRulesNestedInput
+  account?: Prisma.AccountUpdateOneWithoutRecurringRulesNestedInput
+}
+
+export type RecurringRuleUncheckedUpdateWithoutCategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ledgerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cronExpression?: Prisma.StringFieldUpdateOperationsInput | string
+  nextRunDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type RecurringRuleUncheckedUpdateManyWithoutCategoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ledgerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  accountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cronExpression?: Prisma.StringFieldUpdateOperationsInput | string
+  nextRunDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type RecurringRuleCreateManyAccountInput = {
+  id?: string
+  ledgerId: string
+  name: string
+  type: string
+  amount: number
+  categoryId?: string | null
+  note?: string | null
+  cronExpression: string
+  nextRunDate: Date | string
+  isActive?: boolean
+}
+
+export type RecurringRuleUpdateWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cronExpression?: Prisma.StringFieldUpdateOperationsInput | string
+  nextRunDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ledger?: Prisma.LedgerUpdateOneRequiredWithoutRecurringRulesNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutRecurringRulesNestedInput
+}
+
+export type RecurringRuleUncheckedUpdateWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ledgerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cronExpression?: Prisma.StringFieldUpdateOperationsInput | string
+  nextRunDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type RecurringRuleUncheckedUpdateManyWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ledgerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cronExpression?: Prisma.StringFieldUpdateOperationsInput | string
+  nextRunDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
 
 
 export type RecurringRuleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -674,6 +968,8 @@ export type RecurringRuleSelect<ExtArgs extends runtime.Types.Extensions.Interna
   nextRunDate?: boolean
   isActive?: boolean
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.RecurringRule$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.RecurringRule$accountArgs<ExtArgs>
 }, ExtArgs["result"]["recurringRule"]>
 
 export type RecurringRuleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -689,6 +985,8 @@ export type RecurringRuleSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   nextRunDate?: boolean
   isActive?: boolean
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.RecurringRule$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.RecurringRule$accountArgs<ExtArgs>
 }, ExtArgs["result"]["recurringRule"]>
 
 export type RecurringRuleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -704,6 +1002,8 @@ export type RecurringRuleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   nextRunDate?: boolean
   isActive?: boolean
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.RecurringRule$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.RecurringRule$accountArgs<ExtArgs>
 }, ExtArgs["result"]["recurringRule"]>
 
 export type RecurringRuleSelectScalar = {
@@ -723,18 +1023,26 @@ export type RecurringRuleSelectScalar = {
 export type RecurringRuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ledgerId" | "name" | "type" | "amount" | "categoryId" | "accountId" | "note" | "cronExpression" | "nextRunDate" | "isActive", ExtArgs["result"]["recurringRule"]>
 export type RecurringRuleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.RecurringRule$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.RecurringRule$accountArgs<ExtArgs>
 }
 export type RecurringRuleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.RecurringRule$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.RecurringRule$accountArgs<ExtArgs>
 }
 export type RecurringRuleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ledger?: boolean | Prisma.LedgerDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.RecurringRule$categoryArgs<ExtArgs>
+  account?: boolean | Prisma.RecurringRule$accountArgs<ExtArgs>
 }
 
 export type $RecurringRulePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "RecurringRule"
   objects: {
     ledger: Prisma.$LedgerPayload<ExtArgs>
+    category: Prisma.$CategoryPayload<ExtArgs> | null
+    account: Prisma.$AccountPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1143,6 +1451,8 @@ readonly fields: RecurringRuleFieldRefs;
 export interface Prisma__RecurringRuleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   ledger<T extends Prisma.LedgerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LedgerDefaultArgs<ExtArgs>>): Prisma.Prisma__LedgerClient<runtime.Types.Result.GetResult<Prisma.$LedgerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  category<T extends Prisma.RecurringRule$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RecurringRule$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  account<T extends Prisma.RecurringRule$accountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RecurringRule$accountArgs<ExtArgs>>): Prisma.Prisma__AccountClient<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1579,6 +1889,44 @@ export type RecurringRuleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many RecurringRules to delete.
    */
   limit?: number
+}
+
+/**
+ * RecurringRule.category
+ */
+export type RecurringRule$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
+}
+
+/**
+ * RecurringRule.account
+ */
+export type RecurringRule$accountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Account
+   */
+  select?: Prisma.AccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Account
+   */
+  omit?: Prisma.AccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountInclude<ExtArgs> | null
+  where?: Prisma.AccountWhereInput
 }
 
 /**

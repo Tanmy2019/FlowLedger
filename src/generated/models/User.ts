@@ -183,6 +183,7 @@ export type UserWhereInput = {
   passwordHash?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   ledgers?: Prisma.LedgerMemberListRelationFilter
+  ownedLedgers?: Prisma.LedgerListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -192,6 +193,7 @@ export type UserOrderByWithRelationInput = {
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   ledgers?: Prisma.LedgerMemberOrderByRelationAggregateInput
+  ownedLedgers?: Prisma.LedgerOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -204,6 +206,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   passwordHash?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   ledgers?: Prisma.LedgerMemberListRelationFilter
+  ownedLedgers?: Prisma.LedgerListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -235,6 +238,7 @@ export type UserCreateInput = {
   passwordHash: string
   createdAt?: Date | string
   ledgers?: Prisma.LedgerMemberCreateNestedManyWithoutUserInput
+  ownedLedgers?: Prisma.LedgerCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -244,6 +248,7 @@ export type UserUncheckedCreateInput = {
   passwordHash: string
   createdAt?: Date | string
   ledgers?: Prisma.LedgerMemberUncheckedCreateNestedManyWithoutUserInput
+  ownedLedgers?: Prisma.LedgerUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUpdateInput = {
@@ -253,6 +258,7 @@ export type UserUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ledgers?: Prisma.LedgerMemberUpdateManyWithoutUserNestedInput
+  ownedLedgers?: Prisma.LedgerUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -262,6 +268,7 @@ export type UserUncheckedUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ledgers?: Prisma.LedgerMemberUncheckedUpdateManyWithoutUserNestedInput
+  ownedLedgers?: Prisma.LedgerUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -329,6 +336,20 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type UserCreateNestedOneWithoutOwnedLedgersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedLedgersInput, Prisma.UserUncheckedCreateWithoutOwnedLedgersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedLedgersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOwnedLedgersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedLedgersInput, Prisma.UserUncheckedCreateWithoutOwnedLedgersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedLedgersInput
+  upsert?: Prisma.UserUpsertWithoutOwnedLedgersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnedLedgersInput, Prisma.UserUpdateWithoutOwnedLedgersInput>, Prisma.UserUncheckedUpdateWithoutOwnedLedgersInput>
+}
+
 export type UserCreateNestedOneWithoutLedgersInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutLedgersInput, Prisma.UserUncheckedCreateWithoutLedgersInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutLedgersInput
@@ -343,12 +364,65 @@ export type UserUpdateOneRequiredWithoutLedgersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLedgersInput, Prisma.UserUpdateWithoutLedgersInput>, Prisma.UserUncheckedUpdateWithoutLedgersInput>
 }
 
+export type UserCreateWithoutOwnedLedgersInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  ledgers?: Prisma.LedgerMemberCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutOwnedLedgersInput = {
+  id?: string
+  name?: string | null
+  email: string
+  passwordHash: string
+  createdAt?: Date | string
+  ledgers?: Prisma.LedgerMemberUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutOwnedLedgersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedLedgersInput, Prisma.UserUncheckedCreateWithoutOwnedLedgersInput>
+}
+
+export type UserUpsertWithoutOwnedLedgersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnedLedgersInput, Prisma.UserUncheckedUpdateWithoutOwnedLedgersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedLedgersInput, Prisma.UserUncheckedCreateWithoutOwnedLedgersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnedLedgersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnedLedgersInput, Prisma.UserUncheckedUpdateWithoutOwnedLedgersInput>
+}
+
+export type UserUpdateWithoutOwnedLedgersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ledgers?: Prisma.LedgerMemberUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnedLedgersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ledgers?: Prisma.LedgerMemberUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutLedgersInput = {
   id?: string
   name?: string | null
   email: string
   passwordHash: string
   createdAt?: Date | string
+  ownedLedgers?: Prisma.LedgerCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutLedgersInput = {
@@ -357,6 +431,7 @@ export type UserUncheckedCreateWithoutLedgersInput = {
   email: string
   passwordHash: string
   createdAt?: Date | string
+  ownedLedgers?: Prisma.LedgerUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutLedgersInput = {
@@ -381,6 +456,7 @@ export type UserUpdateWithoutLedgersInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedLedgers?: Prisma.LedgerUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLedgersInput = {
@@ -389,6 +465,7 @@ export type UserUncheckedUpdateWithoutLedgersInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedLedgers?: Prisma.LedgerUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 
@@ -398,10 +475,12 @@ export type UserUncheckedUpdateWithoutLedgersInput = {
 
 export type UserCountOutputType = {
   ledgers: number
+  ownedLedgers: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ledgers?: boolean | UserCountOutputTypeCountLedgersArgs
+  ownedLedgers?: boolean | UserCountOutputTypeCountOwnedLedgersArgs
 }
 
 /**
@@ -421,6 +500,13 @@ export type UserCountOutputTypeCountLedgersArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.LedgerMemberWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOwnedLedgersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LedgerWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -429,6 +515,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   passwordHash?: boolean
   createdAt?: boolean
   ledgers?: boolean | Prisma.User$ledgersArgs<ExtArgs>
+  ownedLedgers?: boolean | Prisma.User$ownedLedgersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -459,6 +546,7 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "createdAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   ledgers?: boolean | Prisma.User$ledgersArgs<ExtArgs>
+  ownedLedgers?: boolean | Prisma.User$ownedLedgersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -468,6 +556,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     ledgers: Prisma.$LedgerMemberPayload<ExtArgs>[]
+    ownedLedgers: Prisma.$LedgerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -870,6 +959,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   ledgers<T extends Prisma.User$ledgersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ledgersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LedgerMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ownedLedgers<T extends Prisma.User$ownedLedgersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedLedgersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1316,6 +1406,30 @@ export type User$ledgersArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.LedgerMemberScalarFieldEnum | Prisma.LedgerMemberScalarFieldEnum[]
+}
+
+/**
+ * User.ownedLedgers
+ */
+export type User$ownedLedgersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Ledger
+   */
+  select?: Prisma.LedgerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Ledger
+   */
+  omit?: Prisma.LedgerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LedgerInclude<ExtArgs> | null
+  where?: Prisma.LedgerWhereInput
+  orderBy?: Prisma.LedgerOrderByWithRelationInput | Prisma.LedgerOrderByWithRelationInput[]
+  cursor?: Prisma.LedgerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LedgerScalarFieldEnum | Prisma.LedgerScalarFieldEnum[]
 }
 
 /**
