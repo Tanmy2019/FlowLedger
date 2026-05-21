@@ -1,0 +1,56 @@
+<h2>认证与权限体系</h2>
+
+<div class="section">
+  <h3>登录流程</h3>
+  <pre style="background:#1e1e2e;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;">
+访问 /  →  登录页  →  输入邮箱+密码  →  创建/加入账本
+                        │
+                  初始用户 → 创建默认账本 + 默认分类
+                  受邀用户 → 接受邀请加入已有账本</pre>
+</div>
+
+<div class="section">
+  <h3>认证方案：NextAuth v5</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div style="background:#1e1e2e;padding:12px;border-radius:8px;">
+      <div style="color:#10B981;font-weight:bold;">登录方式</div>
+      <ul style="color:#94A3B8;font-size:13px;margin:4px 0;">
+        <li>邮箱+密码登录（凭证登录）</li>
+        <li>JWT Session（无数据库 session）</li>
+        <li>支持后续扩展 OAuth</li>
+      </ul>
+    </div>
+    <div style="background:#1e1e2e;padding:12px;border-radius:8px;">
+      <div style="color:#F59E0B;font-weight:bold;">权限校验</div>
+      <ul style="color:#94A3B8;font-size:13px;margin:4px 0;">
+        <li>API 中间件校验 JWT</li>
+        <li>每个 API 请求校验：用户是否在该账本中</li>
+        <li>写操作校验：role !== viewer</li>
+        <li>管理操作校验：role === owner</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>邀请流程</h3>
+  <pre style="background:#1e1e2e;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;">
+Owner → 发送邀请链接（含token）
+  → 受邀用户点击链接 → 如果已有账号直接加入
+                      → 如果无账号先注册再加入
+  → 加入后默认为 viewer 角色
+  → Owner 可调整角色权限</pre>
+</div>
+
+<div class="section">
+  <h3>账本切换</h3>
+  <pre style="background:#1e1e2e;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;">
+侧边栏顶部账本下拉切换
+├── 家庭账 (当前)
+├── 旅行账
+├── 生意账
+└── [+ 新建账本]
+
+切换后：所有数据（流水/账户/预算/统计）跟随账本切换
+数据完全隔离</pre>
+</div>

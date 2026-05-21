@@ -1,0 +1,54 @@
+<h2>核心功能实现方案</h2>
+
+<div class="section">
+  <h3>1. 周期记账</h3>
+  <pre style="background:#1e1e2e;padding:12px;border-radius:8px;font-size:13px;line-height:1.6;">
+方案：Cron 定时任务 + 生成待确认记录
+- 用户设置周期规则（每月1日房租 ¥5000）
+- 每天凌晨 cron job 检查到期规则
+- 生成 status=pending 的流水记录
+- 用户确认后转为正式记录（可修改金额/分类）
+- 用户可选择忽略</pre>
+</div>
+
+<div class="section">
+  <h3>2. 模板记账</h3>
+  <pre style="background:#1e1e2e;padding:12px;border-radius:8px;font-size:13px;line-height:1.6;">
+方案：Template 表存储常用组合
+- 用户可从任意记录「存为模板」
+- 选择模板时一键填充：金额/分类/账户/标签/备注
+- 仍可修改后提交</pre>
+</div>
+
+<div class="section">
+  <h3>3. 批量操作</h3>
+  <pre style="background:#1e1e2e;padding:12px;border-radius:8px;font-size:13px;line-height:1.6;">
+流水列表：勾选多条 → 批量删除 / 批量编辑（改分类/账户/标签）
+分类/成员列表：勾选多条 → 批量删除</pre>
+</div>
+
+<div class="section">
+  <h3>4. 数据导入流程</h3>
+  <pre style="background:#1e1e2e;padding:12px;border-radius:8px;font-size:13px;line-height:1.6;">
+上传 CSV/Excel → 列映射配置 → 预览匹配结果 → 确认导入
+                    │
+              可选：保存映射配置为模板</pre>
+</div>
+
+<div class="section">
+  <h3>5. 自动分类规则</h3>
+  <pre style="background:#1e1e2e;padding:12px;border-radius:8px;font-size:13px;line-height:1.6;">
+Rule 表：条件(商家名/备注含关键词) → 动作(自动指定分类/标签/账户)
+- 支持多个条件组合（AND/OR）
+- 记账时匹配 → 自动填充分类和标签
+- 导入时匹配 → 批量自动归类</pre>
+</div>
+
+<div class="section">
+  <h3>6. 充值记录与转账</h3>
+  <pre style="background:#1e1e2e;padding:12px;border-radius:8px;font-size:13px;line-height:1.6;">
+转账逻辑：
+- 一条记录同时记录转出账户(accountId)和转入账户(toAccountId)
+- 提交时：转出账户余额 -= 金额，转入账户余额 += 金额
+- 使用 Prisma 事务保证原子性</pre>
+</div>

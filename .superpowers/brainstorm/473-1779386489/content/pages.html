@@ -1,0 +1,98 @@
+<h2>页面结构与导航</h2>
+<p class="subtitle">左侧侧边栏 + 主内容区布局</p>
+
+<div class="section">
+  <h3>导航结构</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div style="background:#1e1e2e;padding:16px;border-radius:8px;">
+      <div style="color:#06B6D4;font-weight:bold;margin-bottom:8px;">📊 侧边栏菜单</div>
+      <ul style="list-style:none;padding:0;margin:0;line-height:2;">
+        <li style="color:#94A3B8;">▸ 仪表盘（概览）</li>
+        <li style="color:#94A3B8;">▸ 流水</li>
+        <li style="color:#94A3B8;">▸ 账户</li>
+        <li style="color:#94A3B8;">▸ 分类</li>
+        <li style="color:#94A3B8;">▸ 预算</li>
+        <li style="color:#94A3B8;">▸ 统计</li>
+        <li style="color:#94A3B8;">▸ 设置</li>
+      </ul>
+    </div>
+    <div style="background:#1e1e2e;padding:16px;border-radius:8px;">
+      <div style="color:#10B981;font-weight:bold;margin-bottom:8px;">➕ 浮动操作按钮 (FAB)</div>
+      <p style="color:#94A3B8;font-size:13px;">右下角常驻「记一笔」按钮</p>
+      <p style="color:#94A3B8;font-size:13px;">点击弹出快速记账弹窗</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>主要页面</h3>
+
+  <div style="background:#1e1e2e;padding:16px;border-radius:8px;margin-bottom:12px;">
+    <div style="color:#F59E0B;font-weight:bold;margin-bottom:4px;">1. 仪表盘 (/dashboard)</div>
+    <ul style="color:#94A3B8;font-size:13px;margin:4px 0;">
+      <li>顶部卡片：本月收支、结余、总资产、环比变化</li>
+      <li>中间：支出分类饼图 + 收入来源饼图（可点击下钻）</li>
+      <li>底部：近6月收支趋势折线图</li>
+      <li>右上角：账本切换下拉框</li>
+    </ul>
+  </div>
+
+  <div style="background:#1e1e2e;padding:16px;border-radius:8px;margin-bottom:12px;">
+    <div style="color:#10B981;font-weight:bold;margin-bottom:4px;">2. 流水 (/transactions)</div>
+    <ul style="color:#94A3B8;font-size:13px;margin:4px 0;">
+      <li>列表视图：时间分组展示，每行显示金额/分类/账户/备注</li>
+      <li>顶部筛选栏：时间范围、类型、分类、账户、搜索框</li>
+      <li>点击行可编辑，长按/勾选可批量操作</li>
+      <li>右上角「记一笔」按钮</li>
+    </ul>
+  </div>
+
+  <div style="background:#1e1e2e;padding:16px;border-radius:8px;margin-bottom:12px;">
+    <div style="color:#8B5CF6;font-weight:bold;margin-bottom:4px;">3. 统计 (/analytics)</div>
+    <ul style="color:#94A3B8;font-size:13px;margin:4px 0;">
+      <li>支出分类饼图/排行榜 · 收入来源饼图/排行榜</li>
+      <li>每日/每周/每月收支趋势折线图</li>
+      <li>周/月对比柱状图 · 日历热力图</li>
+      <li>账户余额分布 · 净现金流趋势</li>
+      <li>必要 vs 非必要支出 · 财务健康评分</li>
+      <li>标签/成员/商家聚合统计</li>
+    </ul>
+  </div>
+
+  <div style="background:#1e1e2e;padding:16px;border-radius:8px;margin-bottom:12px;">
+    <div style="color:#EC4899;font-weight:bold;margin-bottom:4px;">4. 预算 (/budgets)</div>
+    <ul style="color:#94A3B8;font-size:13px;margin:4px 0;">
+      <li>预算卡片列表：分类预算 + 总预算</li>
+      <li>进度条显示使用率，超80%/100%变色预警</li>
+      <li>剩余天数可花额度计算</li>
+      <li>与上月/去年同月对比</li>
+    </ul>
+  </div>
+
+  <div style="background:#1e1e2e;padding:16px;border-radius:8px;margin-bottom:12px;">
+    <div style="color:#14B8A6;font-weight:bold;margin-bottom:4px;">5. 设置 (/settings)</div>
+    <ul style="color:#94A3B8;font-size:13px;margin:4px 0;">
+      <li>账本管理 · 成员管理 · 分类管理</li>
+      <li>模板管理 · 自动分类规则 · 数据导入</li>
+      <li>主题切换 · 个人资料</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <h3>快速记账弹窗</h3>
+  <pre style="background:#1e1e2e;padding:16px;border-radius:8px;font-size:13px;line-height:1.8;">
+┌──────────────────────────────────┐
+│  记一笔                    ✕     │
+├──────────────────────────────────┤
+│  类型: [支出 ▼]                  │
+│  金额: [________]                │
+│  分类: [餐饮 ▼]                  │
+│  日期: [2025-05-22]              │
+│  账户: [微信 ▼]                  │
+│  备注: [________]   标签: [+][餐]│
+│  成员: [▼] (多人账本)            │
+│                                  │
+│  [□ 存为模板]  [取消]  [保存]   │
+└──────────────────────────────────┘</pre>
+</div>

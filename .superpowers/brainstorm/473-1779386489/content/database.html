@@ -1,0 +1,65 @@
+<h2>数据库设计</h2>
+<p class="subtitle">Prisma Schema — 核心模型关系</p>
+
+<div class="section">
+  <h3>用户与账本</h3>
+  <pre style="background:#1e1e2e;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;">
+User ──< Ledger ──< Transaction
+ │        │            │
+ │        │            ├──> Category (分类)
+ │        │            ├──> Account  (账户)
+ │        │            ├──> Tag      (标签)
+ │        │            └──> Member   (成员,多人账本)
+ │        │
+ │        ├──> Budget       (预算)
+ │        ├──> Template     (记账模板)
+ │        └──> Rule         (自动分类规则)
+ │
+ └── LedgerMember (账本成员关联)</pre>
+</div>
+
+<div class="section">
+  <h3>核心表清单</h3>
+  <div style="display:grid;gap:12px;">
+    <div style="background:#1e1e2e;padding:12px;border-radius:8px;border-left:3px solid #06B6D4;">
+      <strong>User</strong> — id, name, email, passwordHash, createdAt
+    </div>
+    <div style="background:#1e1e2e;padding:12px;border-radius:8px;border-left:3px solid #10B981;">
+      <strong>Ledger</strong> — id, name, type(家庭/旅行/生意), icon, color, ownerId, createdAt
+    </div>
+    <div style="background:#1e1e2e;padding:12px;border-radius:8px;border-left:3px solid #F59E0B;">
+      <strong>Transaction</strong> — id, ledgerId, type(收入/支出/转账), amount, date, note, categoryId, accountId, toAccountId(转账目标), memberId, merchant, project, createdAt
+    </div>
+    <div style="background:#1e1e2e;padding:12px;border-radius:8px;border-left:3px solid #8B5CF6;">
+      <strong>Category</strong> — id, ledgerId, name, parentId(二级分类), type(收入/支出), icon, color, sortOrder
+    </div>
+    <div style="background:#1e1e2e;padding:12px;border-radius:8px;border-left:3px solid #EC4899;">
+      <strong>Account</strong> — id, ledgerId, name, type(现金/银行卡/信用卡/支付宝/微信/投资/负债), balance, initialBalance, icon, color, sortOrder
+    </div>
+    <div style="background:#1e1e2e;padding:12px;border-radius:8px;border-left:3px solid #14B8A6;">
+      <strong>Budget</strong> — id, ledgerId, name, amount, period(月/年/自定义), startDate, endDate, categoryId(可选), type(必要/非必要/全部)
+    </div>
+    <div style="background:#1e1e2e;padding:12px;border-radius:8px;border-left:3px solid #F97316;">
+      <strong>Tag</strong> — id, ledgerId, name, color
+    </div>
+    <div style="background:#1e1e2e;padding:12px;border-radius:8px;border-left:3px solid #6366F1;">
+      <strong>TransactionTag</strong> — transactionId, tagId (多对多关联)
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>账多用户权限模型</h3>
+  <pre style="background:#1e1e2e;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;">
+LedgerMember
+├── userId      → 用户
+├── ledgerId    → 账本
+├── role        → owner / editor / viewer
+└── joinDate
+
+权限规则:
+- owner: 完全控制，可删除账本、管理成员
+- editor: 可记账、编辑、删除自己的记录
+- viewer: 仅可查看统计和流水（不可增删改）
+</pre>
+</div>
