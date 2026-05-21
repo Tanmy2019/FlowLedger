@@ -1,15 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { prisma, getDefaultLedger } from "@/lib/db";
 import { transactionSchema } from "@/lib/validations";
 
-async function getDefaultLedger(userId: string) {
-  const member = await prisma.ledgerMember.findFirst({
-    where: { userId },
-    orderBy: { joinedAt: "asc" },
-  });
-  return member?.ledgerId;
-}
 
 export async function GET(
   _request: Request,

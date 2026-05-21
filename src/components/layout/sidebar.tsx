@@ -13,7 +13,7 @@ const menuItems = [
   { href: "/dashboard/accounts", label: "账户", icon: "🏦" },
   { href: "/dashboard/categories", label: "分类", icon: "🏷️" },
   { href: "/dashboard/budgets", label: "预算", icon: "💰" },
-  { href: "/dashboard/statistics", label: "统计", icon: "📈" },
+  { href: "/dashboard/analytics", label: "统计", icon: "📈" },
   { href: "/dashboard/settings", label: "设置", icon: "⚙️" },
 ];
 
