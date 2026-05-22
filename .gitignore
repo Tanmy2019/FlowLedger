@@ -1,6 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# --- 依赖 ---
 /node_modules
 /.pnp
 .pnp.*
@@ -10,37 +8,52 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# --- 测试 ---
 /coverage
 
-# next.js
+# --- Next.js 构建输出 ---
 /.next/
 /out/
 
-# production
+# --- 生产构建 ---
 /build
 
-# misc
+# --- 系统文件 ---
 .DS_Store
+Thumbs.db
 *.pem
 
-# debug
+# --- 调试日志 ---
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# --- 环境变量文件 ---
 .env*
+!.env.example
 
-# vercel
+# --- vercel ---
 .vercel
 
-# typescript
+# --- TypeScript ---
 *.tsbuildinfo
 next-env.d.ts
 .superpowers/
 
-# database
+# --- SQLite 数据库 ---
 *.db
 *.db-journal
+*.db-wal
+*.db-shm
+
+# --- Prisma 生成的客户端（通过 `npx prisma generate` 重新生成） ---
+src/generated/
+
+# --- 临时文件 ---
+*.tmp
+*.temp
+
+# --- 项目文档（非代码，不纳入版本控制） ---
+功能需求.md
+测试数据_*.csv
