@@ -59,6 +59,4 @@ src/generated/
 测试数据_*.csv
 设计文档.md
 ./docs
-./docs\*
 .superpowers
-.superpowers\*
