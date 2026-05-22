@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ledgerFetchUrl } from "@/lib/ledger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,7 +35,7 @@ export default function TagsSettingsPage() {
 
   const loadTags = async () => {
     try {
-      const res = await fetch("/api/tags");
+      const res = await fetch(ledgerFetchUrl("/api/tags"));
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
       setTags(data);
@@ -56,7 +57,7 @@ export default function TagsSettingsPage() {
     }
 
     try {
-      const res = await fetch("/api/tags", {
+      const res = await fetch(ledgerFetchUrl("/api/tags"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: name.trim(), color }),
@@ -77,7 +78,7 @@ export default function TagsSettingsPage() {
     if (!confirm("确定要删除此标签吗？")) return;
 
     try {
-      const res = await fetch("/api/tags", {
+      const res = await fetch(ledgerFetchUrl("/api/tags"), {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),

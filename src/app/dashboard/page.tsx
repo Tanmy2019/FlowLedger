@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ledgerFetchUrl } from "@/lib/ledger";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   PieChart,
@@ -69,7 +70,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/analytics/overview")
+    fetch(ledgerFetchUrl("/api/analytics/overview"))
       .then((res) => res.json())
       .then((json) => setData(json))
       .catch(() => {})

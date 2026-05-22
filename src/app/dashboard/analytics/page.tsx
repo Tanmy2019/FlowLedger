@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ledgerFetchUrl } from "@/lib/ledger";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
@@ -91,8 +92,8 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/analytics/overview").then((r) => r.json()),
-      fetch("/api/analytics/trends").then((r) => r.json()),
+      fetch(ledgerFetchUrl("/api/analytics/overview")).then((r) => r.json()),
+      fetch(ledgerFetchUrl("/api/analytics/trends")).then((r) => r.json()),
     ])
       .then(([overviewData, trendsData]) => {
         setOverview(overviewData);

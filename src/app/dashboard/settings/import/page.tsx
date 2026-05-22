@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { getActiveLedgerId } from "@/lib/ledger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -37,6 +38,7 @@ export default function ImportSettingsPage() {
   const [noteIndex, setNoteIndex] = useState(2);
   const [typeIndex, setTypeIndex] = useState(-1);
   const [importing, setImporting] = useState(false);
+  const [importErrors, setImportErrors] = useState<string[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,6 +107,31 @@ export default function ImportSettingsPage() {
     return csvData.slice(0, 5);
   };
 
+  function parseDateValue(raw: string): string {
+    const s = raw.trim();
+    if (!s) return new Date().toISOString().split("T")[0];
+
+    // YYYY-MM-DD / YYYY/MM/DD (support non-zero-padded, optional time part)
+    const dateMatch = s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+    if (dateMatch) {
+      return `${dateMatch[1]}-${String(dateMatch[2]).padStart(2, "0")}-${String(dateMatch[3]).padStart(2, "0")}`;
+    }
+
+    // Chinese date format: 2024年1月15日 / 2024年01月15日
+    if (/^\d{4}年\d{1,2}月\d{1,2}日?$/.test(s)) {
+      const m = s.match(/^(\d{4})年(\d{1,2})月(\d{1,2})日?$/);
+      if (m) return `${m[1]}-${String(m[2]).padStart(2, "0")}-${String(m[3]).padStart(2, "0")}`;
+    }
+
+    // Try JS Date parsing for other formats
+    const parsed = new Date(s);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toISOString().split("T")[0];
+    }
+
+    return new Date().toISOString().split("T")[0];
+  }
+
   const handleImport = async () => {
     if (csvData.length === 0) {
       toast("请先选择 CSV 文件");
@@ -112,7 +139,9 @@ export default function ImportSettingsPage() {
     }
 
     setImporting(true);
+    setImportErrors([]);
 
+    const errors: string[] = [];
     const transactions = csvData.map((row) => {
       let type = "expense";
       const typeRaw = typeIndex >= 0 ? row[typeIndex]?.toLowerCase() : "";
@@ -124,15 +153,7 @@ export default function ImportSettingsPage() {
 
       const amount = parseFloat(row[amountIndex]?.replace(/[¥$,]/g, "") || "0");
 
-      const dateStr = row[dateIndex] || "";
-      let date: string;
-      if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
-        date = dateStr;
-      } else if (/^\d{4}\/\d{2}\/\d{2}/.test(dateStr)) {
-        date = dateStr.replace(/\//g, "-");
-      } else {
-        date = new Date().toISOString().split("T")[0];
-      }
+      const date = parseDateValue(row[dateIndex] || "");
 
       return {
         type,
@@ -143,11 +164,7 @@ export default function ImportSettingsPage() {
     });
 
     try {
-      // First get the default ledger
-      const ledgerRes = await fetch("/api/ledgers");
-      const ledgers = await ledgerRes.json();
-      const ledgerId =
-        Array.isArray(ledgers) && ledgers.length > 0 ? ledgers[0].id : null;
+      const ledgerId = getActiveLedgerId();
 
       if (!ledgerId) {
         toast("未找到账本");
@@ -164,11 +181,15 @@ export default function ImportSettingsPage() {
       if (!res.ok) throw new Error("Import failed");
 
       const result = await res.json();
-      toast(
-        `导入完成：成功 ${result.successCount} 条，失败 ${result.failedCount} 条`
-      );
-      setCsvData([]);
-      setHeaders([]);
+      const msg = `导入完成：成功 ${result.successCount} 条，失败 ${result.failedCount} 条`;
+      if (result.errors && result.errors.length > 0) {
+        setImportErrors(result.errors);
+        toast(msg);
+      } else {
+        toast(msg);
+        setCsvData([]);
+        setHeaders([]);
+      }
     } catch {
       toast("导入失败");
     } finally {
@@ -211,12 +232,22 @@ export default function ImportSettingsPage() {
                     onValueChange={(v) => setDateIndex(Number(v))}
                   >
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue>
+                      {(value: string | null) => {
+                        if (!value) return null;
+                        return headers[parseInt(value, 10)] || value;
+                      }}
+                    </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {headers.map((h, i) => (
                         <SelectItem key={i} value={String(i)}>
-                          {h}
+                          <span className="truncate">{h}</span>
+                          {csvData.length > 0 && (
+                            <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+                              {csvData[0][i]?.substring(0, 20)}
+                            </span>
+                          )}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -229,12 +260,22 @@ export default function ImportSettingsPage() {
                     onValueChange={(v) => setAmountIndex(Number(v))}
                   >
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue>
+                      {(value: string | null) => {
+                        if (!value) return null;
+                        return headers[parseInt(value, 10)] || value;
+                      }}
+                    </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {headers.map((h, i) => (
                         <SelectItem key={i} value={String(i)}>
-                          {h}
+                          <span className="truncate">{h}</span>
+                          {csvData.length > 0 && (
+                            <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+                              {csvData[0][i]?.substring(0, 20)}
+                            </span>
+                          )}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -247,12 +288,22 @@ export default function ImportSettingsPage() {
                     onValueChange={(v) => setNoteIndex(Number(v))}
                   >
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue>
+                      {(value: string | null) => {
+                        if (!value) return null;
+                        return headers[parseInt(value, 10)] || value;
+                      }}
+                    </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {headers.map((h, i) => (
                         <SelectItem key={i} value={String(i)}>
-                          {h}
+                          <span className="truncate">{h}</span>
+                          {csvData.length > 0 && (
+                            <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+                              {csvData[0][i]?.substring(0, 20)}
+                            </span>
+                          )}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -265,13 +316,23 @@ export default function ImportSettingsPage() {
                     onValueChange={(v) => setTypeIndex(Number(v))}
                   >
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue>
+                      {(value: string | null) => {
+                        if (!value || value === "-1") return null;
+                        return headers[parseInt(value, 10)] || value;
+                      }}
+                    </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="-1">无</SelectItem>
                       {headers.map((h, i) => (
                         <SelectItem key={i} value={String(i)}>
-                          {h}
+                          <span className="truncate">{h}</span>
+                          {csvData.length > 0 && (
+                            <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+                              {csvData[0][i]?.substring(0, 20)}
+                            </span>
+                          )}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -313,6 +374,17 @@ export default function ImportSettingsPage() {
               <Button onClick={handleImport} disabled={importing}>
                 {importing ? "导入中..." : "开始导入"}
               </Button>
+
+              {importErrors.length > 0 && (
+                <div className="rounded-md border border-red-200 bg-red-50 p-3">
+                  <p className="mb-1 text-sm font-medium text-red-700">导入失败详情：</p>
+                  <ul className="list-inside list-disc space-y-0.5 text-xs text-red-600">
+                    {importErrors.map((err, i) => (
+                      <li key={i}>{err}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </>
           )}
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ledgerFetchUrl } from "@/lib/ledger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -49,7 +50,7 @@ export default function CategoriesPage() {
 
   const loadCategories = async () => {
     try {
-      const res = await fetch("/api/categories");
+      const res = await fetch(ledgerFetchUrl("/api/categories"));
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
       setCategories(data);
@@ -120,7 +121,7 @@ export default function CategoriesPage() {
     if (!confirm("确定要删除此分类吗？")) return;
 
     try {
-      const res = await fetch("/api/categories", {
+      const res = await fetch(ledgerFetchUrl("/api/categories"), {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
@@ -364,7 +365,11 @@ export default function CategoriesPage() {
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue />
+                  <SelectValue>
+                    {(value: string | null) =>
+                      value === "expense" ? "支出" : value === "income" ? "收入" : null
+                    }
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="expense">支出</SelectItem>
@@ -382,7 +387,13 @@ export default function CategoriesPage() {
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="无（顶级分类）" />
+                  <SelectValue placeholder="无（顶级分类）">
+                    {(value: string | null) => {
+                      if (!value) return null;
+                      const parent = categories.find((c) => c.id === value);
+                      return parent ? parent.name : value;
+                    }}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">无（顶级分类）</SelectItem>

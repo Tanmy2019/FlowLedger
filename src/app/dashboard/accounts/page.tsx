@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ledgerFetchUrl } from "@/lib/ledger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -69,7 +70,7 @@ export default function AccountsPage() {
 
   const loadAccounts = async () => {
     try {
-      const res = await fetch("/api/accounts");
+      const res = await fetch(ledgerFetchUrl("/api/accounts"));
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
       setAccounts(data);
@@ -117,7 +118,7 @@ export default function AccountsPage() {
     }
 
     try {
-      const url = "/api/accounts";
+      const url = ledgerFetchUrl("/api/accounts");
       const method = editing ? "PUT" : "POST";
       const body = {
         ...(editing && { id: editing.id }),
@@ -148,7 +149,7 @@ export default function AccountsPage() {
     if (!confirm("确定要删除此账户吗？")) return;
 
     try {
-      const res = await fetch("/api/accounts", {
+      const res = await fetch(ledgerFetchUrl("/api/accounts"), {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
@@ -293,7 +294,11 @@ export default function AccountsPage() {
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue />
+                  <SelectValue>
+                    {(value: string | null) =>
+                      value ? typeLabels[value] || value : null
+                    }
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {Object.entries(typeLabels).map(([key, label]) => (

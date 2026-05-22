@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ledgerFetchUrl } from "@/lib/ledger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -71,7 +72,7 @@ export default function SettingsPage() {
     try {
       const [ledgersRes, membersRes] = await Promise.all([
         fetch("/api/ledgers"),
-        fetch("/api/members"),
+        fetch(ledgerFetchUrl("/api/members")),
       ]);
       if (ledgersRes.ok) setLedgers(await ledgersRes.json());
       if (membersRes.ok) setMembers(await membersRes.json());
@@ -179,7 +180,11 @@ export default function SettingsPage() {
                   <label className="text-sm font-medium">类型</label>
                   <Select value={type} onValueChange={(v) => setType(v ?? "personal")}>
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue>
+                        {(value: string | null) =>
+                          value ? typeLabels[value] || value : null
+                        }
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {Object.entries(typeLabels).map(([key, label]) => (

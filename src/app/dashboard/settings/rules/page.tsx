@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ledgerFetchUrl } from "@/lib/ledger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -63,7 +64,7 @@ export default function RulesSettingsPage() {
 
   const loadRules = async () => {
     try {
-      const res = await fetch("/api/rules");
+      const res = await fetch(ledgerFetchUrl("/api/rules"));
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
       setRules(data);
@@ -76,7 +77,7 @@ export default function RulesSettingsPage() {
 
   const loadCategories = async () => {
     try {
-      const res = await fetch("/api/categories");
+      const res = await fetch(ledgerFetchUrl("/api/categories"));
       if (res.ok) setCategories(await res.json());
     } catch {
       // silent
@@ -120,7 +121,7 @@ export default function RulesSettingsPage() {
     }
 
     try {
-      const res = await fetch("/api/rules", {
+      const res = await fetch(ledgerFetchUrl("/api/rules"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -149,7 +150,7 @@ export default function RulesSettingsPage() {
     if (!confirm("确定要删除此规则吗？")) return;
 
     try {
-      const res = await fetch("/api/rules", {
+      const res = await fetch(ledgerFetchUrl("/api/rules"), {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
@@ -213,7 +214,11 @@ export default function RulesSettingsPage() {
                 <label className="text-sm font-medium">匹配模式</label>
                 <Select value={matchMode} onValueChange={(v) => setMatchMode(v ?? "all")}>
                   <SelectTrigger>
-                    <SelectValue />
+                    <SelectValue>
+                    {(value: string | null) =>
+                      value ? matchModeLabels[value] || value : null
+                    }
+                  </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">全部满足</SelectItem>
@@ -243,7 +248,11 @@ export default function RulesSettingsPage() {
                       }
                     >
                       <SelectTrigger className="w-24">
-                        <SelectValue />
+                        <SelectValue>
+                        {(value: string | null) =>
+                          value ? fieldLabels[value] || value : null
+                        }
+                      </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="note">备注</SelectItem>
@@ -258,7 +267,11 @@ export default function RulesSettingsPage() {
                       }
                     >
                       <SelectTrigger className="w-24">
-                        <SelectValue />
+                        <SelectValue>
+                        {(value: string | null) =>
+                          value ? operatorLabels[value] || value : null
+                        }
+                      </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="contains">包含</SelectItem>
@@ -297,7 +310,13 @@ export default function RulesSettingsPage() {
                   onValueChange={(v) => setActionCategoryId(v ?? "")}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="选择分类" />
+                    <SelectValue placeholder="选择分类">
+                    {(value: string | null) => {
+                      if (!value || value === "all") return null;
+                      const cat = categories.find((c) => c.id === value);
+                      return cat ? cat.name : value;
+                    }}
+                  </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">不自动分类</SelectItem>

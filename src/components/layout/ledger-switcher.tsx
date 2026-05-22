@@ -46,9 +46,9 @@ export function LedgerSwitcher() {
       <SelectTrigger className="w-full">
         <SelectValue placeholder="选择账本">
           {(value: string | null) => {
-            if (!value) return null;
+            if (!value) return <span className="text-muted-foreground">选择账本</span>;
             const ledger = ledgers.find((l) => l.id === value);
-            return ledger ? ledger.name : value;
+            return ledger ? ledger.name : "加载中...";
           }}
         </SelectValue>
       </SelectTrigger>

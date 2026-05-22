@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ledgerFetchUrl } from "@/lib/ledger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,6 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { toast } from "sonner";
+import { Plus, Trash2, FileText } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -16,9 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "sonner";
-import { Plus, Trash2, FileText } from "lucide-react";
-
 type Category = {
   id: string;
   name: string;
@@ -58,7 +58,7 @@ export default function TemplatesSettingsPage() {
 
   const loadTemplates = async () => {
     try {
-      const res = await fetch("/api/templates");
+      const res = await fetch(ledgerFetchUrl("/api/templates"));
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
       setTemplates(data);
@@ -71,7 +71,7 @@ export default function TemplatesSettingsPage() {
 
   const loadCategories = async () => {
     try {
-      const res = await fetch("/api/categories");
+      const res = await fetch(ledgerFetchUrl("/api/categories"));
       if (res.ok) setCategories(await res.json());
     } catch {
       // silent
@@ -80,7 +80,7 @@ export default function TemplatesSettingsPage() {
 
   const loadAccounts = async () => {
     try {
-      const res = await fetch("/api/accounts");
+      const res = await fetch(ledgerFetchUrl("/api/accounts"));
       if (res.ok) setAccounts(await res.json());
     } catch {
       // silent
@@ -100,7 +100,7 @@ export default function TemplatesSettingsPage() {
     }
 
     try {
-      const res = await fetch("/api/templates", {
+      const res = await fetch(ledgerFetchUrl("/api/templates"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -130,7 +130,7 @@ export default function TemplatesSettingsPage() {
     if (!confirm("确定要删除此模板吗？")) return;
 
     try {
-      const res = await fetch("/api/templates", {
+      const res = await fetch(ledgerFetchUrl("/api/templates"), {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
@@ -180,7 +180,11 @@ export default function TemplatesSettingsPage() {
               <label className="text-sm font-medium">类型</label>
               <Select value={type} onValueChange={(v) => setType(v ?? "expense")}>
                 <SelectTrigger className="w-24">
-                  <SelectValue />
+                  <SelectValue>
+                    {(value: string | null) =>
+                      value ? typeLabels[value] || value : null
+                    }
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="expense">支出</SelectItem>
@@ -203,7 +207,13 @@ export default function TemplatesSettingsPage() {
               <label className="text-sm font-medium">分类</label>
               <Select value={categoryId} onValueChange={(v) => setCategoryId(v ?? "")}>
                 <SelectTrigger className="w-32">
-                  <SelectValue placeholder="不限" />
+                  <SelectValue placeholder="不限">
+                    {(value: string | null) => {
+                      if (!value || value === "all") return null;
+                      const cat = categories.find((c) => c.id === value);
+                      return cat ? cat.name : value;
+                    }}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">不限</SelectItem>
@@ -219,7 +229,13 @@ export default function TemplatesSettingsPage() {
               <label className="text-sm font-medium">账户</label>
               <Select value={accountId} onValueChange={(v) => setAccountId(v ?? "")}>
                 <SelectTrigger className="w-32">
-                  <SelectValue placeholder="不限" />
+                  <SelectValue placeholder="不限">
+                    {(value: string | null) => {
+                      if (!value || value === "all") return null;
+                      const acc = accounts.find((a) => a.id === value);
+                      return acc ? acc.name : value;
+                    }}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">不限</SelectItem>

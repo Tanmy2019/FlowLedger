@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { ledgerFetchUrl, getActiveLedgerId } from "@/lib/ledger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -99,6 +100,10 @@ export default function TransactionsPage() {
     (Partial<TransactionFormData> & { id: string }) | null
   >(null);
   const [deleting, setDeleting] = useState(false);
+  const [batchEditOpen, setBatchEditOpen] = useState(false);
+  const [batchCategoryId, setBatchCategoryId] = useState("");
+  const [batchAccountId, setBatchAccountId] = useState("");
+  const [batchUpdating, setBatchUpdating] = useState(false);
 
   // Filters
   const [typeFilter, setTypeFilter] = useState("all");
@@ -121,6 +126,8 @@ export default function TransactionsPage() {
     setLoading(true);
     try {
       const params = new URLSearchParams();
+      const lid = getActiveLedgerId();
+      if (lid) params.set("ledgerId", lid);
       if (typeFilter !== "all") params.set("type", typeFilter);
       if (search.trim()) params.set("search", search.trim());
       if (startDate) params.set("startDate", startDate);
@@ -151,8 +158,8 @@ export default function TransactionsPage() {
     const loadFilterData = async () => {
       try {
         const [catRes, accRes] = await Promise.all([
-          fetch("/api/categories"),
-          fetch("/api/accounts"),
+          fetch(ledgerFetchUrl("/api/categories")),
+          fetch(ledgerFetchUrl("/api/accounts")),
         ]);
         if (catRes.ok) {
           type NestedCategory = { id: string; name: string; type: string; children?: NestedCategory[] };
@@ -242,7 +249,7 @@ export default function TransactionsPage() {
 
     setDeleting(true);
     try {
-      const res = await fetch("/api/transactions/batch-delete", {
+      const res = await fetch(ledgerFetchUrl("/api/transactions/batch-delete"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ids: Array.from(selectedIds) }),
@@ -258,6 +265,41 @@ export default function TransactionsPage() {
       toast("批量删除失败");
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const handleBatchUpdate = async () => {
+    if (selectedIds.size === 0) return;
+    if (!batchCategoryId && !batchAccountId) {
+      toast("请选择要修改的字段");
+      return;
+    }
+
+    setBatchUpdating(true);
+    try {
+      const updates: Record<string, string> = {};
+      if (batchCategoryId) updates.categoryId = batchCategoryId;
+      if (batchAccountId) updates.accountId = batchAccountId;
+
+      const res = await fetch(ledgerFetchUrl("/api/transactions/batch-update"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: Array.from(selectedIds), updates }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update");
+
+      const result = await res.json();
+      toast(`成功修改 ${result.count} 条流水`);
+      setBatchEditOpen(false);
+      setBatchCategoryId("");
+      setBatchAccountId("");
+      setSelectedIds(new Set());
+      loadTransactions();
+    } catch {
+      toast("批量修改失败");
+    } finally {
+      setBatchUpdating(false);
     }
   };
 
@@ -403,6 +445,13 @@ export default function TransactionsPage() {
             删除选中
           </Button>
           <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setBatchEditOpen(true)}
+          >
+            批量修改
+          </Button>
+          <Button
             variant="ghost"
             size="sm"
             onClick={() => setSelectedIds(new Set())}
@@ -427,6 +476,28 @@ export default function TransactionsPage() {
         </div>
       ) : (
         <div className="space-y-6">
+          {/* Select All */}
+          <div className="flex items-center gap-3 px-4 py-2">
+            <button
+              type="button"
+              className={`flex size-5 items-center justify-center rounded border ${
+                selectedIds.size === transactions.length && transactions.length > 0
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-input"
+              }`}
+              onClick={() => toggleSelectAll()}
+            >
+              {selectedIds.size === transactions.length && transactions.length > 0 && (
+                <Check className="size-3" />
+              )}
+            </button>
+            <span className="text-sm text-muted-foreground">
+              {selectedIds.size > 0
+                ? `已选择 ${selectedIds.size}/${transactions.length}`
+                : "全选"}
+            </span>
+          </div>
+
           {Object.entries(grouped).map(([dateKey, txs]) => (
             <div key={dateKey}>
               {/* Date Header */}
@@ -607,6 +678,72 @@ export default function TransactionsPage() {
               setEditingTx(null);
             }}
           />
+        </DialogContent>
+      </Dialog>
+
+      {/* Batch Edit Dialog */}
+      <Dialog open={batchEditOpen} onOpenChange={setBatchEditOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>批量修改（{selectedIds.size} 条）</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">分类</label>
+              <Select value={batchCategoryId} onValueChange={setBatchCategoryId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="不修改">
+                  {(value: string | null) => {
+                    if (!value) return null;
+                    const cat = filterCategories.find((c) => c.id === value);
+                    return cat ? cat.name : value;
+                  }}
+                </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">不修改</SelectItem>
+                  {filterCategories
+                    .filter((c) => typeFilter === "all" || c.type === typeFilter)
+                    .map((c) => (
+                      <SelectItem key={c.id} value={c.id}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">账户</label>
+              <Select value={batchAccountId} onValueChange={setBatchAccountId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="不修改">
+                  {(value: string | null) => {
+                    if (!value) return null;
+                    const acc = filterAccounts.find((a) => a.id === value);
+                    return acc ? acc.name : value;
+                  }}
+                </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">不修改</SelectItem>
+                  {filterAccounts.map((a) => (
+                    <SelectItem key={a.id} value={a.id}>
+                      {a.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="outline" onClick={() => setBatchEditOpen(false)} disabled={batchUpdating}>
+                取消
+              </Button>
+              <Button onClick={handleBatchUpdate} disabled={batchUpdating}>
+                {batchUpdating && <Loader2 className="mr-1 size-4 animate-spin" />}
+                确认修改
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

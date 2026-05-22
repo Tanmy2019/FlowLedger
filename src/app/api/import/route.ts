@@ -30,13 +30,17 @@ export async function POST(request: Request) {
   // Pre-validate all transactions
   const validated: { tx: ImportTransaction }[] = [];
   let failedCount = 0;
+  const errors: string[] = [];
 
-  for (const tx of transactions) {
-    const validation = validateImportTransaction(tx as ImportTransaction);
+  for (let i = 0; i < transactions.length; i++) {
+    const validation = validateImportTransaction(transactions[i] as ImportTransaction);
     if (validation.success) {
-      validated.push({ tx: tx as ImportTransaction });
+      validated.push({ tx: transactions[i] as ImportTransaction });
     } else {
       failedCount++;
+      if (errors.length < 100) {
+        errors.push(`第 ${i + 1} 条: ${validation.error}`);
+      }
     }
   }
 
@@ -84,5 +88,6 @@ export async function POST(request: Request) {
   return NextResponse.json({
     successCount: validated.length,
     failedCount,
+    errors: errors.length > 0 ? errors : undefined,
   });
 }

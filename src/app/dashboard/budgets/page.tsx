@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ledgerFetchUrl } from "@/lib/ledger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -69,7 +70,7 @@ export default function BudgetsPage() {
 
   const loadBudgets = async () => {
     try {
-      const res = await fetch("/api/budgets");
+      const res = await fetch(ledgerFetchUrl("/api/budgets"));
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
       setBudgets(data);
@@ -82,7 +83,7 @@ export default function BudgetsPage() {
 
   const loadCategories = async () => {
     try {
-      const res = await fetch("/api/categories");
+      const res = await fetch(ledgerFetchUrl("/api/categories"));
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
       setCategories(data);
@@ -109,7 +110,7 @@ export default function BudgetsPage() {
     }
 
     try {
-      const res = await fetch("/api/budgets", {
+      const res = await fetch(ledgerFetchUrl("/api/budgets"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -138,7 +139,7 @@ export default function BudgetsPage() {
     if (!confirm("确定要删除此预算吗？")) return;
 
     try {
-      const res = await fetch("/api/budgets", {
+      const res = await fetch(ledgerFetchUrl("/api/budgets"), {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
@@ -204,7 +205,11 @@ export default function BudgetsPage() {
                 <label className="text-sm font-medium">周期</label>
                 <Select value={period} onValueChange={(v) => setPeriod(v ?? "monthly")}>
                   <SelectTrigger>
-                    <SelectValue />
+                    <SelectValue>
+                      {(value: string | null) =>
+                        value === "monthly" ? "每月" : value === "yearly" ? "每年" : null
+                      }
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="monthly">每月</SelectItem>
@@ -216,7 +221,13 @@ export default function BudgetsPage() {
                 <label className="text-sm font-medium">分类（可选）</label>
                 <Select value={categoryId} onValueChange={(v) => setCategoryId(v ?? "")}>
                   <SelectTrigger>
-                    <SelectValue placeholder="全部类别" />
+                    <SelectValue placeholder="全部类别">
+                    {(value: string | null) => {
+                      if (!value || value === "all") return null;
+                      const cat = categories.find((c) => c.id === value);
+                      return cat ? cat.name : value;
+                    }}
+                  </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">全部类别</SelectItem>

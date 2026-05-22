@@ -3,13 +3,14 @@ import { auth } from "@/lib/auth";
 import { prisma, getDefaultLedger } from "@/lib/db";
 
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await auth();
   if (!session?.user?.id) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const ledgerId = await getDefaultLedger(session.user.id);
+  const { searchParams } = new URL(request.url);
+  const ledgerId = await getDefaultLedger(session.user.id, searchParams.get("ledgerId"));
   if (!ledgerId) {
     return NextResponse.json([]);
   }
@@ -28,7 +29,8 @@ export async function POST(request: Request) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const ledgerId = await getDefaultLedger(session.user.id);
+  const { searchParams } = new URL(request.url);
+  const ledgerId = await getDefaultLedger(session.user.id, searchParams.get("ledgerId"));
   if (!ledgerId) {
     return new NextResponse("No ledger found", { status: 400 });
   }
@@ -56,7 +58,8 @@ export async function DELETE(request: Request) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const ledgerId = await getDefaultLedger(session.user.id);
+  const { searchParams } = new URL(request.url);
+  const ledgerId = await getDefaultLedger(session.user.id, searchParams.get("ledgerId"));
   if (!ledgerId) {
     return new NextResponse("No ledger found", { status: 400 });
   }

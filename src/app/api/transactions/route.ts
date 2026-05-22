@@ -10,12 +10,12 @@ export async function GET(request: Request) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const ledgerId = await getDefaultLedger(session.user.id);
+  const { searchParams } = new URL(request.url);
+  const ledgerId = await getDefaultLedger(session.user.id, searchParams.get("ledgerId"));
   if (!ledgerId) {
     return NextResponse.json({ transactions: [], total: 0, page: 1, limit: 50 });
   }
 
-  const { searchParams } = new URL(request.url);
   const page = Math.max(parseInt(searchParams.get("page") || "1"), 1);
   const limit = Math.min(Math.max(parseInt(searchParams.get("limit") || "50"), 1), 200);
   const type = searchParams.get("type");
@@ -89,7 +89,8 @@ export async function POST(request: Request) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const ledgerId = await getDefaultLedger(session.user.id);
+  const { searchParams } = new URL(request.url);
+  const ledgerId = await getDefaultLedger(session.user.id, searchParams.get("ledgerId"));
   if (!ledgerId) {
     return new NextResponse("No ledger found", { status: 400 });
   }

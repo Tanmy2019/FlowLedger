@@ -6,13 +6,14 @@ const MAX_AMOUNT = 1_000_000_000_000; // 1 万亿，过滤导入损坏的异常�
 const isValidAmount = (n: number) => isFinite(n) && n > 0 && n < MAX_AMOUNT;
 
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await auth();
   if (!session?.user?.id) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const ledgerId = await getDefaultLedger(session.user.id);
+  const { searchParams } = new URL(request.url);
+  const ledgerId = await getDefaultLedger(session.user.id, searchParams.get("ledgerId"));
   if (!ledgerId) {
     return NextResponse.json({
       totalAssets: 0,

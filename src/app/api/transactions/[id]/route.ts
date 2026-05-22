@@ -5,7 +5,7 @@ import { transactionSchema } from "@/lib/validations";
 
 
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
@@ -14,8 +14,8 @@ export async function GET(
   }
 
   const { id } = await params;
-
-  const ledgerId = await getDefaultLedger(session.user.id);
+  const { searchParams } = new URL(request.url);
+  const ledgerId = await getDefaultLedger(session.user.id, searchParams.get("ledgerId"));
   if (!ledgerId) {
     return new NextResponse("No ledger found", { status: 400 });
   }
@@ -50,7 +50,8 @@ export async function PUT(
 
   const { id } = await params;
 
-  const ledgerId = await getDefaultLedger(session.user.id);
+  const { searchParams } = new URL(request.url);
+  const ledgerId = await getDefaultLedger(session.user.id, searchParams.get("ledgerId"));
   if (!ledgerId) {
     return new NextResponse("No ledger found", { status: 400 });
   }
@@ -198,7 +199,8 @@ export async function DELETE(
 
   const { id } = await params;
 
-  const ledgerId = await getDefaultLedger(session.user.id);
+  const { searchParams } = new URL(request.url);
+  const ledgerId = await getDefaultLedger(session.user.id, searchParams.get("ledgerId"));
   if (!ledgerId) {
     return new NextResponse("No ledger found", { status: 400 });
   }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { ledgerFetchUrl } from "@/lib/ledger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -100,9 +101,9 @@ export function TransactionForm({
     const loadMeta = async () => {
       try {
         const [catRes, accRes, tagRes] = await Promise.all([
-          fetch("/api/categories"),
-          fetch("/api/accounts"),
-          fetch("/api/tags"),
+          fetch(ledgerFetchUrl("/api/categories")),
+          fetch(ledgerFetchUrl("/api/accounts")),
+          fetch(ledgerFetchUrl("/api/tags")),
         ]);
         if (catRes.ok) setCategories(await catRes.json());
         if (accRes.ok) setAccounts(await accRes.json());
@@ -122,7 +123,7 @@ export function TransactionForm({
 
     const matchRules = async () => {
       try {
-        const res = await fetch("/api/rules");
+        const res = await fetch(ledgerFetchUrl("/api/rules"));
         if (!res.ok) return;
         const rules: {
           id: string;
@@ -333,7 +334,13 @@ export function TransactionForm({
             onValueChange={(value) => { if (value) updateForm({ categoryId: value }); }}
           >
             <SelectTrigger>
-              <SelectValue placeholder="选择分类" />
+              <SelectValue placeholder="选择分类">
+                  {(value: string | null) => {
+                    if (!value) return null;
+                    const cat = categories.find((c) => c.id === value);
+                    return cat ? cat.name : value;
+                  }}
+                </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {filteredCategories.map((cat) => (

@@ -13,7 +13,8 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-export async function getDefaultLedger(userId: string) {
+export async function getDefaultLedger(userId: string, ledgerId?: string | null) {
+  if (ledgerId) return ledgerId;
   const member = await prisma.ledgerMember.findFirst({
     where: { userId },
     orderBy: { joinedAt: "asc" },
