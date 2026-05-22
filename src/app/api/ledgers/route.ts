@@ -48,3 +48,30 @@ export async function POST(request: Request) {
 
   return NextResponse.json(ledger);
 }
+
+export async function DELETE(request: Request) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  const { searchParams } = new URL(request.url);
+  const ledgerId = searchParams.get("ledgerId");
+  if (!ledgerId) {
+    return new NextResponse("ledgerId is required", { status: 400 });
+  }
+
+  // 验证当前用户是该账本成员
+  const member = await prisma.ledgerMember.findFirst({
+    where: { userId: session.user.id, ledgerId },
+  });
+
+  if (!member) {
+    return new NextResponse("Ledger not found", { status: 404 });
+  }
+
+  // 删除账本（外键 Cascade 配置会自动清理关联数据）
+  await prisma.ledger.delete({ where: { id: ledgerId } });
+
+  return NextResponse.json({ success: true });
+}
