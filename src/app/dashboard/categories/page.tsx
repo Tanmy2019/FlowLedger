@@ -359,6 +359,30 @@ export default function CategoriesPage() {
               </Select>
             </div>
             <div className="space-y-2">
+              <label className="text-sm font-medium">父分类（可选）</label>
+              <Select
+                value={form.parentId}
+                onValueChange={(value) => {
+                  const val = value ?? "";
+                  setForm({ ...form, parentId: val });
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="无（顶级分类）" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">无（顶级分类）</SelectItem>
+                  {categories
+                    .filter((c) => c.type === form.type && c.id !== editing?.id)
+                    .map((c) => (
+                      <SelectItem key={c.id} value={c.id}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
               <label className="text-sm font-medium">颜色</label>
               <Input
                 type="color"
