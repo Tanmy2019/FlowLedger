@@ -135,6 +135,20 @@ export default function CategoriesPage() {
     }
   };
 
+  const getDescendantIds = (catId: string): string[] => {
+    const cat = categories.find((c) => c.id === catId);
+    if (!cat) return [];
+    const ids: string[] = [];
+    const collect = (children: Category[]) => {
+      for (const child of children) {
+        ids.push(child.id);
+        collect(child.children);
+      }
+    };
+    collect(cat.children);
+    return ids;
+  };
+
   const expenseCategories = categories.filter((c) => c.type === "expense");
   const incomeCategories = categories.filter((c) => c.type === "income");
 
@@ -373,7 +387,7 @@ export default function CategoriesPage() {
                 <SelectContent>
                   <SelectItem value="">无（顶级分类）</SelectItem>
                   {categories
-                    .filter((c) => c.type === form.type && c.id !== editing?.id)
+                    .filter((c) => c.type === form.type && c.id !== editing?.id && !getDescendantIds(editing?.id ?? '').includes(c.id))
                     .map((c) => (
                       <SelectItem key={c.id} value={c.id}>
                         {c.name}

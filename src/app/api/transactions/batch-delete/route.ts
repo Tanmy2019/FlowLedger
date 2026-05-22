@@ -57,6 +57,11 @@ export async function POST(request: Request) {
       }
     }
 
+    // 先删除关联的标签（deleteMany 不触发 cascade）
+    await tx.transactionTag.deleteMany({
+      where: { transactionId: { in: ids } },
+    });
+
     await tx.transaction.deleteMany({
       where: { id: { in: ids }, ledgerId },
     });
