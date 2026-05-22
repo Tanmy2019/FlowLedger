@@ -61,3 +61,5 @@ src/generated/
 /docs
 .superpowers\
 /项目无关
+AGENTS.md
+CLAUDE.md
