@@ -15,6 +15,7 @@ export interface ValidationResult {
 }
 
 const VALID_TYPES = ["expense", "income", "transfer"] as const;
+const MAX_AMOUNT = 1_000_000_000_000; // 1 万亿上限，防止导入损坏数据
 
 export function validateImportTransaction(
   tx: ImportTransaction
@@ -23,8 +24,8 @@ export function validateImportTransaction(
     return { success: false, error: "无效的交易类型" };
   }
 
-  if (typeof tx.amount !== "number" || !isFinite(tx.amount) || tx.amount <= 0) {
-    return { success: false, error: "金额必须为正数" };
+  if (typeof tx.amount !== "number" || !isFinite(tx.amount) || tx.amount <= 0 || tx.amount > MAX_AMOUNT) {
+    return { success: false, error: "金额必须为正数且不超过 1 万亿" };
   }
 
   if (!tx.date) {

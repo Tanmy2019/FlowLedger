@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma, getDefaultLedger } from "@/lib/db";
 
+const MAX_AMOUNT = 1_000_000_000_000; // 1 万亿，过滤导入损坏的异常巨量金额
+const isValidAmount = (n: number) => isFinite(n) && n > 0 && n < MAX_AMOUNT;
+
 
 export async function GET() {
   const session = await auth();
@@ -59,11 +62,11 @@ export async function GET() {
   });
 
   const monthlyIncome = monthlyTransactions
-    .filter((t) => t.type === "income")
+    .filter((t) => t.type === "income" && isValidAmount(t.amount))
     .reduce((sum, t) => sum + t.amount, 0);
 
   const monthlyExpense = monthlyTransactions
-    .filter((t) => t.type === "expense")
+    .filter((t) => t.type === "expense" && isValidAmount(t.amount))
     .reduce((sum, t) => sum + t.amount, 0);
 
   // Expense category data
@@ -72,7 +75,7 @@ export async function GET() {
     { name: string; color: string | null; value: number }
   >();
   monthlyTransactions
-    .filter((t) => t.type === "expense")
+    .filter((t) => t.type === "expense" && isValidAmount(t.amount))
     .forEach((t) => {
       const catId = t.categoryId || "uncategorized";
       if (!expenseCategoryMap.has(catId)) {
@@ -95,7 +98,7 @@ export async function GET() {
     { name: string; color: string | null; value: number }
   >();
   monthlyTransactions
-    .filter((t) => t.type === "income")
+    .filter((t) => t.type === "income" && isValidAmount(t.amount))
     .forEach((t) => {
       const catId = t.categoryId || "uncategorized";
       if (!incomeCategoryMap.has(catId)) {
@@ -123,11 +126,11 @@ export async function GET() {
   });
 
   const yearlyIncome = yearlyTransactions
-    .filter((t) => t.type === "income")
+    .filter((t) => t.type === "income" && isValidAmount(t.amount))
     .reduce((sum, t) => sum + t.amount, 0);
 
   const yearlyExpense = yearlyTransactions
-    .filter((t) => t.type === "expense")
+    .filter((t) => t.type === "expense" && isValidAmount(t.amount))
     .reduce((sum, t) => sum + t.amount, 0);
 
   // 4. Month-over-month change percent
@@ -143,10 +146,9 @@ export async function GET() {
     select: { amount: true },
   });
 
-  const lastMonthIncome = lastMonthTransactions.reduce(
-    (sum, t) => sum + t.amount,
-    0,
-  );
+  const lastMonthIncome = lastMonthTransactions
+    .filter((t) => isValidAmount(t.amount))
+    .reduce((sum, t) => sum + t.amount, 0);
   const changePercent =
     lastMonthIncome > 0
       ? ((monthlyIncome - lastMonthIncome) / lastMonthIncome) * 100
@@ -173,7 +175,9 @@ export async function GET() {
     trendMap.set(key, { income: 0, expense: 0 });
   }
 
-  trendTransactions.forEach((t) => {
+  trendTransactions
+    .filter((t) => isValidAmount(t.amount))
+    .forEach((t) => {
     const key = `${t.date.getFullYear()}-${String(t.date.getMonth() + 1).padStart(2, "0")}`;
     if (trendMap.has(key)) {
       const entry = trendMap.get(key)!;

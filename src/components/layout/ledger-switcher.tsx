@@ -44,7 +44,13 @@ export function LedgerSwitcher() {
   return (
     <Select value={value} onValueChange={handleChange}>
       <SelectTrigger className="w-full">
-        <SelectValue placeholder="选择账本" />
+        <SelectValue placeholder="选择账本">
+          {(value: string | null) => {
+            if (!value) return null;
+            const ledger = ledgers.find((l) => l.id === value);
+            return ledger ? ledger.name : value;
+          }}
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         {ledgers.map((ledger) => (

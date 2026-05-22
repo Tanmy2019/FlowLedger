@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma, getDefaultLedger } from "@/lib/db";
 
+const MAX_AMOUNT = 1_000_000_000_000;
+const isValidAmount = (n: number) => isFinite(n) && n > 0 && n < MAX_AMOUNT;
+
 
 export async function GET() {
   const session = await auth();
@@ -35,7 +38,9 @@ export async function GET() {
     monthlyMap.set(key, { income: 0, expense: 0 });
   }
 
-  transactions.forEach((t) => {
+  transactions
+    .filter((t) => isValidAmount(t.amount))
+    .forEach((t) => {
     const key = `${t.date.getFullYear()}-${String(t.date.getMonth() + 1).padStart(2, "0")}`;
     if (monthlyMap.has(key)) {
       const entry = monthlyMap.get(key)!;
@@ -76,7 +81,9 @@ export async function GET() {
     dailyMap.set(key, 0);
   }
 
-  dailyTransactions.forEach((t) => {
+  dailyTransactions
+    .filter((t) => isValidAmount(t.amount))
+    .forEach((t) => {
     const key = `${t.date.getFullYear()}-${String(t.date.getMonth() + 1).padStart(2, "0")}-${String(t.date.getDate()).padStart(2, "0")}`;
     if (dailyMap.has(key)) {
       dailyMap.set(key, dailyMap.get(key)! + t.amount);
