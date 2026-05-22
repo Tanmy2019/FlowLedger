@@ -61,12 +61,12 @@ export async function DELETE(request: Request) {
     return new NextResponse("ledgerId is required", { status: 400 });
   }
 
-  // 验证当前用户是该账本成员
+  // 验证当前用户是该账本的所有者
   const member = await prisma.ledgerMember.findFirst({
     where: { userId: session.user.id, ledgerId },
   });
 
-  if (!member) {
+  if (!member || member.role !== "owner") {
     return new NextResponse("Ledger not found", { status: 404 });
   }
 
