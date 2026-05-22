@@ -289,7 +289,13 @@ export default function TransactionsPage() {
       <div className="flex flex-wrap items-center gap-3 rounded-lg border bg-white p-3">
         <Select value={typeFilter} onValueChange={(value) => { if (value) setTypeFilter(value); }}>
           <SelectTrigger className="w-28">
-            <SelectValue />
+            <SelectValue>
+              {(value: string | null) => {
+                if (value === "all" || !value) return "全部类型";
+                const labels: Record<string, string> = { expense: "支出", income: "收入", transfer: "转账" };
+                return labels[value] || value;
+              }}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">全部类型</SelectItem>
@@ -301,7 +307,13 @@ export default function TransactionsPage() {
 
         <Select value={categoryFilter} onValueChange={(value) => { setCategoryFilter(value ?? "all"); setPage(1); }}>
           <SelectTrigger className="w-36">
-            <SelectValue />
+            <SelectValue>
+              {(value: string | null) => {
+                if (value === "all" || !value) return "全部分类";
+                const cat = filterCategories.find((c) => c.id === value);
+                return cat ? cat.name : value;
+              }}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">全部分类</SelectItem>
@@ -317,7 +329,13 @@ export default function TransactionsPage() {
 
         <Select value={accountFilter} onValueChange={(value) => { setAccountFilter(value ?? "all"); setPage(1); }}>
           <SelectTrigger className="w-36">
-            <SelectValue />
+            <SelectValue>
+              {(value: string | null) => {
+                if (value === "all" || !value) return "全部账户";
+                const acc = filterAccounts.find((a) => a.id === value);
+                return acc ? acc.name : value;
+              }}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">全部账户</SelectItem>

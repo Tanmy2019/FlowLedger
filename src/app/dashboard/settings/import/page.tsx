@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Upload, FileSpreadsheet } from "lucide-react";
+import { parseCSV } from "@/lib/csv";
 
 export default function ImportSettingsPage() {
   const [csvData, setCsvData] = useState<string[][]>([]);
@@ -44,16 +45,20 @@ export default function ImportSettingsPage() {
 
     const reader = new FileReader();
     reader.onload = (event) => {
-      const text = event.target?.result as string;
-      const lines = text.split("\n").filter((line) => line.trim());
+      const arrayBuffer = event.target?.result as ArrayBuffer;
+      // Auto-detect encoding: try UTF-8 first, fall back to GBK for Chinese Excel exports
+      let text: string;
+      try {
+        text = new TextDecoder("utf-8", { fatal: true }).decode(arrayBuffer);
+      } catch {
+        text = new TextDecoder("gbk").decode(arrayBuffer);
+      }
+      const { headers: parsedHeaders, rows: parsedData } = parseCSV(text);
 
-      if (lines.length < 2) {
+      if (parsedHeaders.length === 0) {
         toast("CSV 文件格式错误");
         return;
       }
-
-      const parsedHeaders = parseCSVLine(lines[0]);
-      const parsedData = lines.slice(1).map(parseCSVLine);
 
       setHeaders(parsedHeaders);
       setCsvData(parsedData);
@@ -93,27 +98,7 @@ export default function ImportSettingsPage() {
 
       toast(`已读取 ${parsedData.length} 条记录`);
     };
-    reader.readAsText(file);
-  };
-
-  const parseCSVLine = (line: string): string[] => {
-    const result: string[] = [];
-    let current = "";
-    let inQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-      if (char === '"') {
-        inQuotes = !inQuotes;
-      } else if (char === "," && !inQuotes) {
-        result.push(current.trim());
-        current = "";
-      } else {
-        current += char;
-      }
-    }
-    result.push(current.trim());
-    return result;
+    reader.readAsArrayBuffer(file);
   };
 
   const getPreviewData = () => {

@@ -370,7 +370,13 @@ export function TransactionForm({
             onValueChange={(value) => { if (value) updateForm({ accountId: value }); }}
           >
             <SelectTrigger>
-              <SelectValue placeholder="选择账户" />
+              <SelectValue placeholder="选择账户">
+                {(value: string | null) => {
+                  if (!value) return null;
+                  const account = accounts.find((a) => a.id === value);
+                  return account ? `${account.name} (¥${account.balance.toFixed(2)})` : value;
+                }}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {accounts.map((acc) => (
@@ -398,7 +404,13 @@ export function TransactionForm({
               onValueChange={(value) => { if (value) updateForm({ toAccountId: value }); }}
             >
               <SelectTrigger>
-                <SelectValue placeholder="选择转入账户" />
+                <SelectValue placeholder="选择转入账户">
+                  {(value: string | null) => {
+                    if (!value) return null;
+                    const account = accounts.find((a) => a.id === value);
+                    return account ? `${account.name} (¥${account.balance.toFixed(2)})` : value;
+                  }}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {accounts

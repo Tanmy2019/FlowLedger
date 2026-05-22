@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { validateImportTransaction, type ImportTransaction } from "@/lib/import-validation";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -26,36 +27,24 @@ export async function POST(request: Request) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
-  let successCount = 0;
+  // Pre-validate all transactions
+  const validated: { tx: ImportTransaction }[] = [];
   let failedCount = 0;
 
   for (const tx of transactions) {
-    try {
-      const {
-        type,
-        amount,
-        date,
-        note,
-        categoryId,
-        accountId,
-        toAccountId,
-        merchant,
-      } = tx;
+    const validation = validateImportTransaction(tx as ImportTransaction);
+    if (validation.success) {
+      validated.push({ tx: tx as ImportTransaction });
+    } else {
+      failedCount++;
+    }
+  }
 
-      if (!type || !["expense", "income", "transfer"].includes(type)) {
-        failedCount++;
-        continue;
-      }
-      if (typeof amount !== "number" || amount <= 0) {
-        failedCount++;
-        continue;
-      }
-      if (!date) {
-        failedCount++;
-        continue;
-      }
-
-      await prisma.transaction.create({
+  // Process valid transactions atomically
+  await prisma.$transaction(async (txClient: any) => {
+    for (const { tx: txData } of validated) {
+      const { type, amount, date, note, categoryId, accountId, toAccountId, merchant } = txData;
+      await txClient.transaction.create({
         data: {
           ledgerId,
           type,
@@ -69,33 +58,31 @@ export async function POST(request: Request) {
         },
       });
 
-      // Update account balance
       if (type === "expense" && accountId) {
-        await prisma.account.update({
+        await txClient.account.update({
           where: { id: accountId },
           data: { balance: { decrement: amount } },
         });
       } else if (type === "income" && accountId) {
-        await prisma.account.update({
+        await txClient.account.update({
           where: { id: accountId },
           data: { balance: { increment: amount } },
         });
       } else if (type === "transfer" && accountId && toAccountId) {
-        await prisma.account.update({
+        await txClient.account.update({
           where: { id: accountId },
           data: { balance: { decrement: amount } },
         });
-        await prisma.account.update({
+        await txClient.account.update({
           where: { id: toAccountId },
           data: { balance: { increment: amount } },
         });
       }
-
-      successCount++;
-    } catch {
-      failedCount++;
     }
-  }
+  });
 
-  return NextResponse.json({ successCount, failedCount });
+  return NextResponse.json({
+    successCount: validated.length,
+    failedCount,
+  });
 }
