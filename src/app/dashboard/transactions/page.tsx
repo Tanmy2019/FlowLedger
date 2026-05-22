@@ -197,31 +197,24 @@ export default function TransactionsPage() {
     if (!confirm(`确定要删除选中的 ${selectedIds.size} 条流水吗？`)) return;
 
     setDeleting(true);
-    let successCount = 0;
-    let failCount = 0;
+    try {
+      const res = await fetch("/api/transactions/batch-delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: Array.from(selectedIds) }),
+      });
 
-    for (const id of selectedIds) {
-      try {
-        const res = await fetch(`/api/transactions/${id}`, {
-          method: "DELETE",
-        });
-        if (res.ok) successCount++;
-        else failCount++;
-      } catch {
-        failCount++;
-      }
-    }
+      if (!res.ok) throw new Error("Failed to delete");
 
-    if (successCount > 0) {
-      toast(`成功删除 ${successCount} 条流水`);
+      const result = await res.json();
+      toast(`成功删除 ${result.count} 条流水`);
+      setSelectedIds(new Set());
+      loadTransactions();
+    } catch {
+      toast("批量删除失败");
+    } finally {
+      setDeleting(false);
     }
-    if (failCount > 0) {
-      toast(`${failCount} 条流水删除失败`);
-    }
-
-    setDeleting(false);
-    setSelectedIds(new Set());
-    loadTransactions();
   };
 
   const totalPagesArr = Array.from(
