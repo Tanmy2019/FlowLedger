@@ -65,6 +65,7 @@ export default function SettingsPage() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [type, setType] = useState("personal");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const loadData = async () => {
     try {
@@ -115,6 +116,7 @@ export default function SettingsPage() {
       return;
     }
 
+    setDeletingId(ledger.id);
     try {
       const res = await fetch(`/api/ledgers?ledgerId=${ledger.id}`, {
         method: "DELETE",
@@ -123,17 +125,17 @@ export default function SettingsPage() {
       if (!res.ok) throw new Error("Failed to delete");
 
       toast("账本已删除");
-      loadData();
       // 跳转到其他账本（如果有）
       const remaining = ledgers.filter((l) => l.id !== ledger.id);
       if (remaining.length > 0) {
         localStorage.setItem("activeLedgerId", remaining[0].id);
-        window.location.href = "/dashboard";
       } else {
-        window.location.href = "/dashboard";
+        localStorage.removeItem("activeLedgerId");
       }
+      window.location.href = "/dashboard";
     } catch {
       toast("删除失败");
+      setDeletingId(null);
     }
   };
 
@@ -216,7 +218,9 @@ export default function SettingsPage() {
                   <Button
                     variant="ghost"
                     size="sm"
+                    disabled={deletingId === ledger.id}
                     onClick={() => handleDeleteLedger(ledger)}
+                    aria-label="删除账本"
                   >
                     <Trash2 className="size-4 text-red-500" />
                   </Button>
