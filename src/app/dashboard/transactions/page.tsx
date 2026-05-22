@@ -105,6 +105,15 @@ export default function TransactionsPage() {
   const [search, setSearch] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [accountFilter, setAccountFilter] = useState("all");
+
+  // 筛选选项数据
+  type FilterCategory = { id: string; name: string; type: string };
+  type FilterAccount = { id: string; name: string };
+
+  const [filterCategories, setFilterCategories] = useState<FilterCategory[]>([]);
+  const [filterAccounts, setFilterAccounts] = useState<FilterAccount[]>([]);
 
   const limit = 50;
 
@@ -116,6 +125,8 @@ export default function TransactionsPage() {
       if (search.trim()) params.set("search", search.trim());
       if (startDate) params.set("startDate", startDate);
       if (endDate) params.set("endDate", endDate);
+      if (categoryFilter !== "all") params.set("categoryId", categoryFilter);
+      if (accountFilter !== "all") params.set("accountId", accountFilter);
       params.set("page", String(page));
       params.set("limit", String(limit));
 
@@ -129,11 +140,44 @@ export default function TransactionsPage() {
     } finally {
       setLoading(false);
     }
-  }, [typeFilter, search, startDate, endDate, page]);
+  }, [typeFilter, search, startDate, endDate, categoryFilter, accountFilter, page]);
 
   useEffect(() => {
     loadTransactions();
   }, [loadTransactions]);
+
+  // 加载筛选选项
+  useEffect(() => {
+    const loadFilterData = async () => {
+      try {
+        const [catRes, accRes] = await Promise.all([
+          fetch("/api/categories"),
+          fetch("/api/accounts"),
+        ]);
+        if (catRes.ok) {
+          type NestedCategory = { id: string; name: string; type: string; children?: NestedCategory[] };
+          const cats: NestedCategory[] = await catRes.json();
+          // 平铺所有分类（包括子分类）用于筛选
+          const flat: FilterCategory[] = [];
+          const flatten = (items: NestedCategory[]) => {
+            for (const c of items) {
+              flat.push({ id: c.id, name: c.name, type: c.type });
+              if (c.children) flatten(c.children);
+            }
+          };
+          flatten(cats);
+          setFilterCategories(flat);
+        }
+        if (accRes.ok) {
+          const accs = await accRes.json();
+          setFilterAccounts(accs.map((a: { id: string; name: string }) => ({ id: a.id, name: a.name })));
+        }
+      } catch {
+        // 静默失败，筛选下拉为空
+      }
+    };
+    loadFilterData();
+  }, []);
 
   // Group transactions by date
   const grouped = transactions.reduce<
@@ -252,6 +296,36 @@ export default function TransactionsPage() {
             <SelectItem value="expense">支出</SelectItem>
             <SelectItem value="income">收入</SelectItem>
             <SelectItem value="transfer">转账</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select value={categoryFilter} onValueChange={(value) => { setCategoryFilter(value ?? "all"); setPage(1); }}>
+          <SelectTrigger className="w-36">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">全部分类</SelectItem>
+            {filterCategories
+              .filter((c) => typeFilter === "all" || c.type === typeFilter)
+              .map((c) => (
+                <SelectItem key={c.id} value={c.id}>
+                  {c.name}
+                </SelectItem>
+              ))}
+          </SelectContent>
+        </Select>
+
+        <Select value={accountFilter} onValueChange={(value) => { setAccountFilter(value ?? "all"); setPage(1); }}>
+          <SelectTrigger className="w-36">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">全部账户</SelectItem>
+            {filterAccounts.map((a) => (
+              <SelectItem key={a.id} value={a.id}>
+                {a.name}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 
