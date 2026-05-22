@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Plus, Book, Users } from "lucide-react";
+import { Plus, Book, Users, Trash2 } from "lucide-react";
 
 type LedgerItem = {
   id: string;
@@ -110,6 +110,33 @@ export default function SettingsPage() {
     }
   };
 
+  const handleDeleteLedger = async (ledger: LedgerItem) => {
+    if (!confirm(`确定删除账本「${ledger.name}」？此操作将清除该账本下的所有交易记录、分类、账户、预算等数据，且不可恢复。`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/ledgers?ledgerId=${ledger.id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete");
+
+      toast("账本已删除");
+      loadData();
+      // 跳转到其他账本（如果有）
+      const remaining = ledgers.filter((l) => l.id !== ledger.id);
+      if (remaining.length > 0) {
+        localStorage.setItem("activeLedgerId", remaining[0].id);
+        window.location.href = "/dashboard";
+      } else {
+        window.location.href = "/dashboard";
+      }
+    } catch {
+      toast("删除失败");
+    }
+  };
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">设置</h1>
@@ -186,6 +213,13 @@ export default function SettingsPage() {
                       {typeLabels[ledger.type] || ledger.type}
                     </p>
                   </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleDeleteLedger(ledger)}
+                  >
+                    <Trash2 className="size-4 text-red-500" />
+                  </Button>
                 </div>
               ))}
             </div>
